@@ -119,9 +119,8 @@
                     <input type="text" class="form-control" id="calculatedAge" readonly>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label required">Last Menstrual Period (LMP)</label>
+                    <label class="form-label">Last Menstrual Period (LMP)</label>
                     <input type="date" class="form-control" id="lmp">
-                    <div class="error-message" id="lmpError">LMP is required</div>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Ethnicity</label>
@@ -315,7 +314,95 @@
         
         <!-- Report Section -->
         <div class="report-section" id="reportSection">
-            <!-- Report content remains the same as before -->
+            <div class="text-center mb-4">
+                <h2 class="text-primary">FIRST TRIMESTER SCREENING REPORT</h2>
+                <p class="text-secondary">Generated on: <span id="reportDate"></span></p>
+                <hr>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4>Patient Information</h4>
+                    <table class="table table-sm">
+                        <tr><th>Name:</th><td id="reportPatientName"></td></tr>
+                        <tr><th>ID:</th><td id="reportPatientID"></td></tr>
+                        <tr><th>DOB:</th><td id="reportDOB"></td></tr>
+                        <tr><th>Maternal Age:</th><td id="reportMaternalAge"></td></tr>
+                        <tr><th>Ethnicity:</th><td id="reportEthnicity"></td></tr>
+                        <tr><th>Weight:</th><td id="reportWeight"></td></tr>
+                        <tr><th>LMP:</th><td id="reportLMP"></td></tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h4>Test Information</h4>
+                    <table class="table table-sm">
+                        <tr><th>Test Date:</th><td id="reportTestDate"></td></tr>
+                        <tr><th>Gestational Age (CRL):</th><td id="reportGA"></td></tr>
+                        <tr><th>Gestational Age (LMP):</th><td id="reportGALMP"></td></tr>
+                        <tr><th>CRL:</th><td id="reportCRL"></td></tr>
+                        <tr><th>NT:</th><td id="reportNT"></td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4>Results</h4>
+                    <table class="table table-sm">
+                        <tr><th>hCG Value:</th><td id="reportHCG"></td></tr>
+                        <tr><th>hCG MoM:</th><td id="reportHCGMom"></td></tr>
+                        <tr><th>PAPP-A Value:</th><td id="reportPAPP"></td></tr>
+                        <tr><th>PAPP-A MoM:</th><td id="reportPAPPMom"></td></tr>
+                        <tr><th>NT MoM:</th><td id="reportNTMom"></td></tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h4>Risk Assessment</h4>
+                    <table class="table table-sm">
+                        <tr><th>Trisomy 21:</th><td id="reportT21"></td></tr>
+                        <tr><th>Trisomy 18:</th><td id="reportT18"></td></tr>
+                        <tr><th>Trisomy 13:</th><td id="reportT13"></td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <h4>Graphical Summary</h4>
+                <div style="height: 300px;">
+                    <canvas id="reportChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <h4>Interpretation & Recommendations</h4>
+                <div id="reportInterpretation"></div>
+                <div class="mt-3">
+                    <h5>Physician Comments:</h5>
+                    <div id="reportComments" style="min-height: 80px; border-top: 1px solid #dee2e6; padding-top: 10px;"></div>
+                </div>
+            </div>
+            
+            <div class="mt-5">
+                <p class="text-center"><strong>Disclaimer:</strong> This screening test assesses the risk of certain chromosomal conditions but does not provide a definitive diagnosis. All results should be interpreted by a qualified healthcare professional.</p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <p>Performing Physician: ________________________</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <p>Signature: ________________________</p>
+                        <p>Date: ________________________</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button id="printReportBtn" class="btn btn-primary me-2">
+                    Print Report
+                </button>
+                <button id="closeReportBtn" class="btn btn-outline-secondary ms-2">
+                    Close Report
+                </button>
+            </div>
         </div>
     </div>
 
@@ -362,10 +449,10 @@
             ageField.value = age + ' years';
         }
         
-        // Calculate gestational age from LMP
+        // Calculate gestational age from LMP (for display only)
         function calculateGAFromLMP() {
             const lmpInput = document.getElementById('lmp');
-            if (!lmpInput.value) return null;
+            if (!lmpInput.value) return "Not provided";
             
             const lmp = new Date(lmpInput.value);
             const today = new Date();
@@ -377,7 +464,7 @@
             const weeks = Math.floor(diffDays / 7);
             const days = diffDays % 7;
             
-            return { weeks, days, totalDays: diffDays };
+            return `${weeks} weeks ${days} days`;
         }
         
         // Validate form inputs
@@ -393,7 +480,6 @@
             const requiredFields = [
                 {id: 'patientName', errorId: 'nameError', message: 'Name is required'},
                 {id: 'patientDOB', errorId: 'dobError', message: 'Date of birth is required'},
-                {id: 'lmp', errorId: 'lmpError', message: 'LMP is required'},
                 {id: 'weight', errorId: 'weightError', message: 'Weight is required (40-200 kg)'},
                 {id: 'crl', errorId: 'crlError', message: 'CRL must be 41-76mm'},
                 {id: 'nt', errorId: 'ntError', message: 'NT must be 0.5-8.0mm'},
@@ -433,28 +519,17 @@
                 }
             }
             
-            // Validate LMP
+            // Validate LMP (only if provided)
             const lmp = document.getElementById('lmp').value;
             if (lmp) {
                 const lmpDate = new Date(lmp);
                 const today = new Date();
                 
                 if (lmpDate > today) {
-                    document.getElementById('lmpError').textContent = 'LMP cannot be in the future';
-                    document.getElementById('lmpError').style.display = 'block';
+                    document.getElementById('errorMessage').textContent = 'LMP cannot be in the future';
+                    document.getElementById('errorAlert').style.display = 'block';
                     isValid = false;
                     errors.push('Invalid LMP date');
-                }
-                
-                // Check if LMP is at least 5 weeks ago
-                const minLmp = new Date();
-                minLmp.setDate(today.getDate() - 35); // 35 days = 5 weeks
-                
-                if (lmpDate < minLmp) {
-                    document.getElementById('lmpError').textContent = 'LMP too old (max 12 weeks)';
-                    document.getElementById('lmpError').style.display = 'block';
-                    isValid = false;
-                    errors.push('LMP too old');
                 }
             }
             
@@ -537,6 +612,131 @@
             return "low-risk";
         }
         
+        function createChart(ctx, momHcg, momPappa, momNt) {
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['hCG', 'PAPP-A', 'NT'],
+                    datasets: [{
+                        label: 'MoM Values',
+                        data: [momHcg, momPappa, momNt],
+                        backgroundColor: [
+                            'rgba(44, 111, 187, 0.7)',
+                            'rgba(40, 167, 69, 0.7)',
+                            'rgba(108, 117, 125, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(44, 111, 187)',
+                            'rgb(40, 167, 69)',
+                            'rgb(108, 117, 125)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Multiple of Median (MoM)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        annotation: {
+                            annotations: {
+                                normalRange: {
+                                    type: 'line',
+                                    yMin: 0.8,
+                                    yMax: 0.8,
+                                    borderColor: 'rgba(220, 53, 69, 0.7)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        display: true,
+                                        content: 'Low Risk Threshold (0.8 MoM)',
+                                        position: 'end'
+                                    }
+                                },
+                                normalRange2: {
+                                    type: 'line',
+                                    yMin: 2.5,
+                                    yMax: 2.5,
+                                    borderColor: 'rgba(220, 53, 69, 0.7)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        display: true,
+                                        content: 'High Risk Threshold (2.5 MoM)',
+                                        position: 'end'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function generateReport() {
+            // Populate report data
+            document.getElementById('reportPatientName').textContent = document.getElementById('patientName').value || 'Not provided';
+            document.getElementById('reportPatientID').textContent = document.getElementById('patientID').value || 'N/A';
+            document.getElementById('reportDOB').textContent = document.getElementById('patientDOB').value || 'N/A';
+            document.getElementById('reportMaternalAge').textContent = document.getElementById('calculatedAge').value || 'N/A';
+            document.getElementById('reportEthnicity').textContent = document.getElementById('ethnicity').options[document.getElementById('ethnicity').selectedIndex].text;
+            document.getElementById('reportWeight').textContent = document.getElementById('weight').value ? document.getElementById('weight').value + ' kg' : 'N/A';
+            document.getElementById('reportLMP').textContent = document.getElementById('lmp').value || 'Not provided';
+            
+            document.getElementById('reportGA').textContent = document.getElementById('gaResult').textContent;
+            document.getElementById('reportGALMP').textContent = document.getElementById('gaLmpResult').textContent;
+            document.getElementById('reportCRL').textContent = document.getElementById('crl').value + ' mm';
+            document.getElementById('reportNT').textContent = document.getElementById('nt').value + ' mm';
+            
+            document.getElementById('reportHCG').textContent = document.getElementById('hcg').value + ' IU/ml';
+            document.getElementById('reportHCGMom').textContent = document.getElementById('hcgMomResult').textContent;
+            document.getElementById('reportPAPP').textContent = document.getElementById('pappa').value + ' ng/mL';
+            document.getElementById('reportPAPPMom').textContent = document.getElementById('pappaMomResult').textContent;
+            document.getElementById('reportNTMom').textContent = document.getElementById('ntMomResult').textContent;
+            
+            document.getElementById('reportT21').textContent = document.getElementById('t21Risk').textContent;
+            document.getElementById('reportT18').textContent = document.getElementById('t18Risk').textContent;
+            document.getElementById('reportT13').textContent = document.getElementById('t13Risk').textContent;
+            
+            const t21Class = document.getElementById('t21Risk').className;
+            document.getElementById('reportT21').className = t21Class.includes('high') ? 'high-risk' : 
+                t21Class.includes('moderate') ? 'moderate-risk' : 'low-risk';
+                
+            document.getElementById('reportInterpretation').innerHTML = document.getElementById('interpretationText').innerHTML;
+            document.getElementById('reportComments').textContent = document.getElementById('physicianComments').value || 'No additional comments';
+            
+            // Set report date
+            const now = new Date();
+            document.getElementById('reportDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            document.getElementById('reportTestDate').textContent = now.toLocaleDateString();
+            
+            // Create report chart
+            const reportChartCtx = document.getElementById('reportChart').getContext('2d');
+            const momHcg = parseFloat(document.getElementById('hcgMomResult').textContent);
+            const momPappa = parseFloat(document.getElementById('pappaMomResult').textContent);
+            const momNt = parseFloat(document.getElementById('ntMomResult').textContent);
+            createChart(reportChartCtx, momHcg, momPappa, momNt);
+            
+            // Show report
+            document.getElementById('reportSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+        
         // Event Listeners
         document.getElementById('calculateBtn').addEventListener('click', function() {
             if (!validateForm()) return;
@@ -561,12 +761,8 @@
                 const gaDays = calculateGestationalAge(crl);
                 const gaWeeks = gaDays / 7;
                 
-                // Calculate GA from LMP
+                // Get GA from LMP (display only)
                 const lmpGA = calculateGAFromLMP();
-                let lmpText = "Not provided";
-                if (lmpGA) {
-                    lmpText = `${lmpGA.weeks} weeks ${lmpGA.days} days`;
-                }
                 
                 // Calculate medians
                 const hcgMedian = calculateHcgMedian(gaWeeks);
@@ -584,7 +780,7 @@
                 
                 // Display results
                 document.getElementById('gaResult').textContent = `${weeks} weeks ${days} days`;
-                document.getElementById('gaLmpResult').textContent = lmpText;
+                document.getElementById('gaLmpResult').textContent = lmpGA;
                 document.getElementById('hcgMomResult').textContent = momHcg.toFixed(2);
                 document.getElementById('pappaMomResult').textContent = momPappa.toFixed(2);
                 document.getElementById('ntMomResult').textContent = momNt.toFixed(2);
@@ -678,6 +874,17 @@
             const defaultLmp = new Date();
             defaultLmp.setDate(today.getDate() - 70);
             document.getElementById('lmp').value = defaultLmp.toISOString().split('T')[0];
+        });
+        
+        document.getElementById('generateReportBtn').addEventListener('click', generateReport);
+        
+        document.getElementById('printReportBtn').addEventListener('click', function() {
+            window.print();
+        });
+        
+        document.getElementById('closeReportBtn').addEventListener('click', function() {
+            document.getElementById('reportSection').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
         });
     </script>
 </body>
