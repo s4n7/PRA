@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive First Trimester Screening Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c6fbb;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --light-bg: #f8f9fa;
+        }
+        
+        .fts-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .section-card {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .result-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin: 30px 0;
+        }
+        
+        .risk-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 5px;
+        }
+        
+        .low-risk { background: #d4edda; color: #155724; }
+        .moderate-risk { background: #fff3cd; color: #856404; }
+        .high-risk { background: #f8d7da; color: #721c24; }
+        
+        .report-section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+        
+        .print-only {
+            display: none;
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+            .print-only {
+                display: block;
+            }
+            .report-section {
+                display: block !important;
+                box-shadow: none;
+                padding: 0;
+            }
+            body {
+                background: white !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fts-container">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="text-primary">First Trimester Screening Calculator</h1>
+            <p class="lead text-secondary">Comprehensive risk assessment with graphical reporting</p>
+        </div>
+        
+        <!-- Patient Information Section -->
+        <div class="section-card">
+            <h3><i class="bi bi-person-circle"></i> Patient Information</h3>
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="patientName">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Patient ID</label>
+                    <input type="text" class="form-control" id="patientID">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="patientDOB">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Ethnicity</label>
+                    <select class="form-select" id="ethnicity">
+                        <option value="asian">Asian</option>
+                        <option value="caucasian">Caucasian</option>
+                        <option value="african">African</option>
+                        <option value="hispanic">Hispanic</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Maternal Age</label>
+                    <input type="number" class="form-control" id="maternalAge">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" class="form-control" id="weight">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Information Section -->
+        <div class="section-card">
+            <h3><i class="bi bi-clipboard-data"></i> Test Parameters</h3>
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <label class="form-label">Crown-Rump Length (CRL) in mm</label>
+                    <input type="number" step="0.1" class="form-control" id="crl" required>
+                    <div class="form-text">41-76mm range</div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Nuchal Translucency (NT) in mm</label>
+                    <input type="number" step="0.01" class="form-control" id="nt" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fetal Heart Rate (bpm)</label>
+                    <input type="number" class="form-control" id="heartRate" value="155">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">hCG Value (IU/ml)</label>
+                    <input type="number" step="0.01" class="form-control" id="hcg" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">PAPP-A Value (ng/mL)</label>
+                    <input type="number" step="0.01" class="form-control" id="pappa" required>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Clinical Notes</label>
+                    <textarea class="form-control" id="clinicalNotes" rows="2"></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-center gap-3 my-4">
+            <button id="calculateBtn" class="btn btn-primary btn-lg px-5">
+                <i class="bi bi-calculator"></i> Calculate Risk
+            </button>
+            <button id="resetBtn" class="btn btn-outline-secondary btn-lg px-5">
+                <i class="bi bi-arrow-repeat"></i> Reset
+            </button>
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div class="text-center my-5" id="loadingSpinner" style="display: none;">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+            <h5 class="mt-3">Calculating Risks...</h5>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="result-card" id="resultSection" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-primary">Risk Assessment Results</h3>
+                <button id="generateReportBtn" class="btn btn-success">
+                    <i class="bi bi-file-earmark-medical"></i> Generate Report
+                </button>
+            </div>
+            
+            <!-- Results Summary -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Key Results</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>Gestational Age:</th>
+                                    <td id="gaResult">-</td>
+                                </tr>
+                                <tr>
+                                    <th>hCG MoM:</th>
+                                    <td id="hcgMomResult">-</td>
+                                </tr>
+                                <tr>
+                                    <th>PAPP-A MoM:</th>
+                                    <td id="pappaMomResult">-</td>
+                                </tr>
+                                <tr>
+                                    <th>NT MoM:</th>
+                                    <td id="ntMomResult">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Fetal Heart Rate:</th>
+                                    <td id="heartRateResult">-</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Risk Assessment</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6>Trisomy 21 (Down Syndrome)</h6>
+                                <div class="risk-indicator low-risk" id="t21Risk">1:2500</div>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Trisomy 18 (Edwards Syndrome)</h6>
+                                <div class="risk-indicator low-risk" id="t18Risk">1:8500</div>
+                            </div>
+                            <div>
+                                <h6>Trisomy 13 (Patau Syndrome)</h6>
+                                <div class="risk-indicator low-risk" id="t13Risk">1:12500</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Biochemical Markers Visualization</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="markersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Interpretation -->
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Interpretation & Recommendations</h5>
+                </div>
+                <div class="card-body">
+                    <div id="interpretationText">
+                        <p>The combined first trimester screening results indicate a <strong>low risk</strong> for major chromosomal abnormalities.</p>
+                        <p>hCG and PAPP-A levels are within normal range for gestational age. Nuchal translucency measurement is normal.</p>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h6>Recommendations:</h6>
+                        <ul id="recommendationsList">
+                            <li>Routine prenatal care with standard follow-up</li>
+                            <li>Anatomy scan at 18-22 weeks gestation</li>
+                            <li>Genetic counseling not indicated based on these results</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <label class="form-label">Additional Comments:</label>
+                        <textarea class="form-control" id="physicianComments" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Report Section -->
+        <div class="report-section" id="reportSection">
+            <div class="print-only text-center mb-4">
+                <h2 class="text-primary">FIRST TRIMESTER SCREENING REPORT</h2>
+                <p class="text-secondary">Generated on: <span id="reportDate"></span></p>
+                <hr>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4>Patient Information</h4>
+                    <table class="table table-sm">
+                        <tr><th>Name:</th><td id="reportPatientName"></td></tr>
+                        <tr><th>ID:</th><td id="reportPatientID"></td></tr>
+                        <tr><th>DOB:</th><td id="reportDOB"></td></tr>
+                        <tr><th>Maternal Age:</th><td id="reportMaternalAge"></td></tr>
+                        <tr><th>Ethnicity:</th><td id="reportEthnicity"></td></tr>
+                        <tr><th>Weight:</th><td id="reportWeight"></td></tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h4>Test Information</h4>
+                    <table class="table table-sm">
+                        <tr><th>Test Date:</th><td id="reportTestDate"></td></tr>
+                        <tr><th>Gestational Age:</th><td id="reportGA"></td></tr>
+                        <tr><th>CRL:</th><td id="reportCRL"></td></tr>
+                        <tr><th>NT:</th><td id="reportNT"></td></tr>
+                        <tr><th>FHR:</th><td id="reportFHR"></td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4>Results</h4>
+                    <table class="table table-sm">
+                        <tr><th>hCG Value:</th><td id="reportHCG"></td></tr>
+                        <tr><th>hCG MoM:</th><td id="reportHCGMom"></td></tr>
+                        <tr><th>PAPP-A Value:</th><td id="reportPAPP"></td></tr>
+                        <tr><th>PAPP-A MoM:</th><td id="reportPAPPMom"></td></tr>
+                        <tr><th>NT MoM:</th><td id="reportNTMom"></td></tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h4>Risk Assessment</h4>
+                    <table class="table table-sm">
+                        <tr><th>Trisomy 21:</th><td id="reportT21"></td></tr>
+                        <tr><th>Trisomy 18:</th><td id="reportT18"></td></tr>
+                        <tr><th>Trisomy 13:</th><td id="reportT13"></td></tr>
+                        <tr><th>Overall Risk:</th><td id="reportOverall"></td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <h4>Graphical Summary</h4>
+                <div style="height: 300px;">
+                    <canvas id="reportChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <h4>Interpretation & Recommendations</h4>
+                <div id="reportInterpretation"></div>
+                <div class="mt-3">
+                    <h5>Physician Comments:</h5>
+                    <div id="reportComments" style="min-height: 80px; border-top: 1px solid #dee2e6; padding-top: 10px;"></div>
+                </div>
+            </div>
+            
+            <div class="mt-5">
+                <p class="text-center"><strong>Disclaimer:</strong> This screening test assesses the risk of certain chromosomal conditions but does not provide a definitive diagnosis. All results should be interpreted by a qualified healthcare professional.</p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <p>Performing Physician: ________________________</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <p>Signature: ________________________</p>
+                        <p>Date: ________________________</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="no-print text-center mt-4">
+                <button id="printReportBtn" class="btn btn-primary me-2">
+                    <i class="bi bi-printer"></i> Print Report
+                </button>
+                <button id="savePDFBtn" class="btn btn-success">
+                    <i class="bi bi-file-earmark-pdf"></i> Save as PDF
+                </button>
+                <button id="closeReportBtn" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-x-circle"></i> Close Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const generateReportBtn = document.getElementById('generateReportBtn');
+        const printReportBtn = document.getElementById('printReportBtn');
+        const savePDFBtn = document.getElementById('savePDFBtn');
+        const closeReportBtn = document.getElementById('closeReportBtn');
+        const resultSection = document.getElementById('resultSection');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const reportSection = document.getElementById('reportSection');
+        
+        // Calculation functions
+        function calculateGestationalAge(crl) {
+            if(crl < 41 || crl > 76) throw new Error("CRL must be between 41-76mm");
+            return 50.678 + (0.649 * crl);
+        }
+
+        function calculateHcgMedian(gaWeeks) {
+            return Math.pow(10, (-0.073895 * gaWeeks + 2.986791));
+        }
+
+        function calculatePappaMedian(gaWeeks) {
+            return Math.pow(10, 
+                (0.065670 * gaWeeks * gaWeeks) - 
+                (1.433004 * gaWeeks) + 
+                10.653544
+            );
+        }
+
+        function calculateNtMedian(crl) {
+            return (0.031 * crl) + 0.381;
+        }
+        
+        function calculateRisks(momHcg, momPappa, momNt, maternalAge) {
+            // Base risk based on maternal age
+            const baseT21Risk = 1/(0.000627 + Math.exp(-16.2395 + 0.286 * (maternalAge - 0.5)));
+            const baseT18Risk = 1/(0.000142 + Math.exp(-16.2395 + 0.286 * (maternalAge - 0.5)));
+            const baseT13Risk = 1/(0.000071 + Math.exp(-16.2395 + 0.286 * (maternalAge - 0.5)));
+            
+            // Adjustment factors based on MoM values
+            const t21Adjustment = Math.exp(
+                -0.3596 * momNt + 
+                0.2689 * Math.log(momHcg) + 
+                -0.3722 * Math.log(momPappa)
+            );
+            
+            const t18Adjustment = Math.exp(
+                -0.556 * momNt + 
+                -0.678 * Math.log(momHcg) + 
+                -0.789 * Math.log(momPappa)
+            );
+            
+            const t13Adjustment = Math.exp(
+                -0.421 * momNt + 
+                -0.532 * Math.log(momHcg) + 
+                -0.643 * Math.log(momPappa)
+            );
+            
+            // Calculate final risks
+            const t21Risk = 1/(1 + ((1 - baseT21Risk)/baseT21Risk) / t21Adjustment);
+            const t18Risk = 1/(1 + ((1 - baseT18Risk)/baseT18Risk) / t18Adjustment);
+            const t13Risk = 1/(1 + ((1 - baseT13Risk)/baseT13Risk) / t13Adjustment);
+            
+            return {
+                t21: formatRisk(1/t21Risk),
+                t18: formatRisk(1/t18Risk),
+                t13: formatRisk(1/t13Risk)
+            };
+        }
+        
+        function formatRisk(risk) {
+            if (risk > 10000) return "1:" + Math.round(risk).toLocaleString();
+            return "1:" + Math.round(risk);
+        }
+        
+        function determineRiskLevel(riskStr) {
+            const riskValue = parseInt(riskStr.split(":")[1].replace(/,/g, ''));
+            if (riskValue < 150) return "high-risk";
+            if (riskValue < 1000) return "moderate-risk";
+            return "low-risk";
+        }
+        
+        function createChart(ctx, momHcg, momPappa, momNt) {
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['hCG', 'PAPP-A', 'NT'],
+                    datasets: [{
+                        label: 'MoM Values',
+                        data: [momHcg, momPappa, momNt],
+                        backgroundColor: [
+                            'rgba(44, 111, 187, 0.7)',
+                            'rgba(40, 167, 69, 0.7)',
+                            'rgba(108, 117, 125, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(44, 111, 187)',
+                            'rgb(40, 167, 69)',
+                            'rgb(108, 117, 125)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Multiple of Median (MoM)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        annotation: {
+                            annotations: {
+                                normalRange: {
+                                    type: 'line',
+                                    yMin: 0.8,
+                                    yMax: 0.8,
+                                    borderColor: 'rgba(220, 53, 69, 0.7)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        display: true,
+                                        content: 'Low Risk Threshold (0.8 MoM)',
+                                        position: 'end'
+                                    }
+                                },
+                                normalRange2: {
+                                    type: 'line',
+                                    yMin: 2.5,
+                                    yMax: 2.5,
+                                    borderColor: 'rgba(220, 53, 69, 0.7)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        display: true,
+                                        content: 'High Risk Threshold (2.5 MoM)',
+                                        position: 'end'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function generateReport() {
+            // Populate report data
+            document.getElementById('reportPatientName').textContent = document.getElementById('patientName').value || 'Not provided';
+            document.getElementById('reportPatientID').textContent = document.getElementById('patientID').value || 'N/A';
+            document.getElementById('reportDOB').textContent = document.getElementById('patientDOB').value || 'N/A';
+            document.getElementById('reportMaternalAge').textContent = document.getElementById('maternalAge').value || 'N/A';
+            document.getElementById('reportEthnicity').textContent = document.getElementById('ethnicity').options[document.getElementById('ethnicity').selectedIndex].text;
+            document.getElementById('reportWeight').textContent = document.getElementById('weight').value ? document.getElementById('weight').value + ' kg' : 'N/A';
+            
+            document.getElementById('reportGA').textContent = document.getElementById('gaResult').textContent;
+            document.getElementById('reportCRL').textContent = document.getElementById('crl').value + ' mm';
+            document.getElementById('reportNT').textContent = document.getElementById('nt').value + ' mm';
+            document.getElementById('reportFHR').textContent = document.getElementById('heartRate').value + ' bpm';
+            
+            document.getElementById('reportHCG').textContent = document.getElementById('hcg').value + ' IU/ml';
+            document.getElementById('reportHCGMom').textContent = document.getElementById('hcgMomResult').textContent;
+            document.getElementById('reportPAPP').textContent = document.getElementById('pappa').value + ' ng/mL';
+            document.getElementById('reportPAPPMom').textContent = document.getElementById('pappaMomResult').textContent;
+            document.getElementById('reportNTMom').textContent = document.getElementById('ntMomResult').textContent;
+            
+            document.getElementById('reportT21').textContent = document.getElementById('t21Risk').textContent;
+            document.getElementById('reportT18').textContent = document.getElementById('t18Risk').textContent;
+            document.getElementById('reportT13').textContent = document.getElementById('t13Risk').textContent;
+            
+            const t21Class = document.getElementById('t21Risk').className;
+            document.getElementById('reportT21').className = t21Class.includes('high') ? 'high-risk' : 
+                t21Class.includes('moderate') ? 'moderate-risk' : 'low-risk';
+                
+            document.getElementById('reportOverall').textContent = document.querySelector('.risk-indicator').textContent;
+            
+            document.getElementById('reportInterpretation').innerHTML = document.getElementById('interpretationText').innerHTML;
+            document.getElementById('reportComments').textContent = document.getElementById('physicianComments').value || 'No additional comments';
+            
+            // Set report date
+            const now = new Date();
+            document.getElementById('reportDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            document.getElementById('reportTestDate').textContent = now.toLocaleDateString();
+            
+            // Create report chart
+            const reportChartCtx = document.getElementById('reportChart').getContext('2d');
+            const momHcg = parseFloat(document.getElementById('hcgMomResult').textContent);
+            const momPappa = parseFloat(document.getElementById('pappaMomResult').textContent);
+            const momNt = parseFloat(document.getElementById('ntMomResult').textContent);
+            createChart(reportChartCtx, momHcg, momPappa, momNt);
+            
+            // Show report
+            reportSection.style.display = 'block';
+            resultSection.style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+        
+        // Event Listeners
+        calculateBtn.addEventListener('click', function() {
+            try {
+                // Show loading
+                loadingSpinner.style.display = 'block';
+                resultSection.style.display = 'none';
+                
+                // Get values
+                const crl = parseFloat(document.getElementById('crl').value);
+                const nt = parseFloat(document.getElementById('nt').value);
+                const hcg = parseFloat(document.getElementById('hcg').value);
+                const pappa = parseFloat(document.getElementById('pappa').value);
+                const maternalAge = parseInt(document.getElementById('maternalAge').value) || 30;
+                const heartRate = parseInt(document.getElementById('heartRate').value) || 155;
+                
+                // Calculate gestational age
+                const gaDays = calculateGestationalAge(crl);
+                const gaWeeks = gaDays / 7;
+                
+                // Calculate medians
+                const hcgMedian = calculateHcgMedian(gaWeeks);
+                const pappaMedian = calculatePappaMedian(gaWeeks);
+                const ntMedian = calculateNtMedian(crl);
+                
+                // Calculate MoMs
+                const momHcg = hcg / hcgMedian;
+                const momPappa = pappa / pappaMedian;
+                const momNt = nt / ntMedian;
+                
+                // Format GA
+                const weeks = Math.floor(gaDays / 7);
+                const days = Math.round(gaDays % 7);
+                
+                // Display results
+                document.getElementById('gaResult').textContent = `${weeks} weeks ${days} days`;
+                document.getElementById('hcgMomResult').textContent = momHcg.toFixed(2);
+                document.getElementById('pappaMomResult').textContent = momPappa.toFixed(2);
+                document.getElementById('ntMomResult').textContent = momNt.toFixed(2);
+                document.getElementById('heartRateResult').textContent = heartRate + ' bpm';
+                
+                // Calculate and display risks
+                const risks = calculateRisks(momHcg, momPappa, momNt, maternalAge);
+                document.getElementById('t21Risk').textContent = risks.t21;
+                document.getElementById('t18Risk').textContent = risks.t18;
+                document.getElementById('t13Risk').textContent = risks.t13;
+                
+                // Update risk indicators
+                const t21RiskLevel = determineRiskLevel(risks.t21);
+                document.getElementById('t21Risk').className = 'risk-indicator ' + t21RiskLevel;
+                document.getElementById('t18Risk').className = 'risk-indicator ' + determineRiskLevel(risks.t18);
+                document.getElementById('t13Risk').className = 'risk-indicator ' + determineRiskLevel(risks.t13);
+                
+                // Update interpretation
+                const interpretation = document.getElementById('interpretationText');
+                if (t21RiskLevel === 'high-risk') {
+                    interpretation.innerHTML = `<p class="text-danger"><strong>HIGH RISK</strong> for Trisomy 21 detected.</p>
+                    <p>hCG MoM is elevated at ${momHcg.toFixed(2)}, and PAPP-A MoM is reduced at ${momPappa.toFixed(2)}. NT measurement is ${momNt.toFixed(2)} MoM.</p>
+                    <p>This combination suggests increased risk for Down syndrome.</p>`;
+                    
+                    const recList = document.getElementById('recommendationsList');
+                    recList.innerHTML = `
+                        <li>Genetic counseling recommended immediately</li>
+                        <li>Diagnostic testing options: CVS or amniocentesis</li>
+                        <li>Detailed anatomy ultrasound at 18-22 weeks</li>
+                        <li>Consider cell-free DNA testing</li>
+                    `;
+                } else if (t21RiskLevel === 'moderate-risk') {
+                    interpretation.innerHTML = `<p class="text-warning"><strong>MODERATE RISK</strong> for Trisomy 21 detected.</p>
+                    <p>Biochemical markers show variations: hCG MoM ${momHcg.toFixed(2)}, PAPP-A MoM ${momPappa.toFixed(2)}, NT MoM ${momNt.toFixed(2)}.</p>
+                    <p>Further assessment is recommended.</p>`;
+                    
+                    const recList = document.getElementById('recommendationsList');
+                    recList.innerHTML = `
+                        <li>Genetic counseling recommended</li>
+                        <li>Consider cell-free DNA testing</li>
+                        <li>Detailed anatomy ultrasound at 18-22 weeks</li>
+                        <li>Follow-up hCG and PAPP-A testing if indicated</li>
+                    `;
+                } else {
+                    interpretation.innerHTML = `<p class="text-success"><strong>LOW RISK</strong> for major chromosomal abnormalities.</p>
+                    <p>hCG MoM: ${momHcg.toFixed(2)}, PAPP-A MoM: ${momPappa.toFixed(2)}, NT MoM: ${momNt.toFixed(2)} are within normal range for gestational age.</p>`;
+                    
+                    const recList = document.getElementById('recommendationsList');
+                    recList.innerHTML = `
+                        <li>Routine prenatal care with standard follow-up</li>
+                        <li>Anatomy scan at 18-22 weeks gestation</li>
+                        <li>Genetic counseling not indicated based on these results</li>
+                    `;
+                }
+                
+                // Create chart
+                const chartCtx = document.getElementById('markersChart').getContext('2d');
+                if (window.markersChart) window.markersChart.destroy();
+                window.markersChart = createChart(chartCtx, momHcg, momPappa, momNt);
+                
+                // Show results
+                setTimeout(function() {
+                    loadingSpinner.style.display = 'none';
+                    resultSection.style.display = 'block';
+                    window.scrollTo(0, document.getElementById('resultSection').offsetTop);
+                }, 1000);
+                
+            } catch (error) {
+                loadingSpinner.style.display = 'none';
+                alert("Error: " + error.message);
+            }
+        });
+        
+        resetBtn.addEventListener('click', function() {
+            document.getElementById('screeningForm').reset();
+            resultSection.style.display = 'none';
+            reportSection.style.display = 'none';
+        });
+        
+        generateReportBtn.addEventListener('click', generateReport);
+        
+        printReportBtn.addEventListener('click', function() {
+            window.print();
+        });
+        
+        savePDFBtn.addEventListener('click', function() {
+            alert("PDF functionality requires a server component. In a real implementation, this would generate a PDF report.");
+        });
+        
+        closeReportBtn.addEventListener('click', function() {
+            reportSection.style.display = 'none';
+            resultSection.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
