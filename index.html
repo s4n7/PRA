@@ -1,17 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maternal Serum Screening</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maternal Serum Screening</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div id="root"></div>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/chart.js@3.7.0/dist/chart.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPDF/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://unpkg.com/react-chartjs-2@3.0.0/dist/index.umd.js"></script>
-  <script src="index.js"></script>
+    <h1>First Trimester Maternal Serum Screening</h1>
+    <form id="form">
+        <label>CRL (mm): <input type="number" id="crl"></label><br>
+        <label>NT (mm): <input type="number" id="nt"></label><br>
+        <label>GA (weeks): <input type="number" id="ga"></label><br>
+        <button type="submit">Submit</button>
+    </form>
+    <canvas id="chart"></canvas>
+
+    <script>
+        document.getElementById('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const crl = document.getElementById('crl').value;
+            const nt = document.getElementById('nt').value;
+            const ga = document.getElementById('ga').value;
+
+            // Simple logic for hCG and PAPP-A (this is just an example; update as needed)
+            const hcg = ga * 100; // Placeholder calculation
+            const pappA = ga * 50; // Placeholder calculation
+
+            // Chart.js logic to plot data
+            const ctx = document.getElementById('chart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 10', 'Week 11', 'Week 12', 'Week 13'],
+                    datasets: [{
+                        label: 'hCG (IU/mL)',
+                        data: [hcg, hcg, hcg, hcg],
+                        borderColor: 'red',
+                        fill: false
+                    }]
+                }
+            });
+        });
+    </script>
 </body>
 </html>
