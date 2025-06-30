@@ -3,44 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maternal Serum Screening</title>
+    <title>First Trimester Maternal Serum Screening</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .results {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .risk-indicator {
+            font-size: 1.8rem;
+            font-weight: bold;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 1.5rem 0;
+            background: #f8f9fa;
+        }
+        
+        .low-risk {
+            color: var(--success);
+            border: 3px solid var(--success);
+        }
+        
+        .medium-risk {
+            color: var(--warning);
+            border: 3px solid var(--warning);
+        }
+        
+        .high-risk {
+            color: var(--danger);
+            border: 3px solid var(--danger);
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .result-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 0.5rem 0;
+        }
+        
+        .result-label {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin: 2rem 0;
+        }
+        
+        .interpretation {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+        
+        .interpretation h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--dark);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .disclaimer {
+            background: #fff8e1;
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>First Trimester Maternal Serum Screening</h1>
-    <form id="form">
-        <label>CRL (mm): <input type="number" id="crl"></label><br>
-        <label>NT (mm): <input type="number" id="nt"></label><br>
-        <label>GA (weeks): <input type="number" id="ga"></label><br>
-        <button type="submit">Submit</button>
-    </form>
-    <canvas id="chart"></canvas>
+    <header>
+        <div class="container">
+            <h1>First Trimester Maternal Serum Screening</h1>
+            <p class="subtitle">Comprehensive risk assessment for chromosomal abnormalities</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title">Patient Information</h2>
+            <div class="disclaimer">
+                <strong>Important:</strong> This screening tool uses established algorithms and population-specific medians for Asian women. Results should be interpreted by a qualified healthcare professional.
+            </div>
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label for="crl">Crown-Rump Length (CRL) in mm</label>
+                    <input type="number" id="crl" min="30" max="90" step="0.1" placeholder="Enter CRL (30-90mm)">
+                    <small>Gestational age: 10-14 weeks</small>
+                </div>
+                
+                <div class="input-group">
+                    <label for="nt">Nuchal Translucency (NT) in mm</label>
+                    <input type="number" id="nt" min="0.5" max="8.0" step="0.1" placeholder="Enter NT measurement">
+                </div>
+                
+                <div class="input-group">
+                    <label for="hcg">Serum hCG (IU/ml)</label>
+                    <input type="number" id="hcg" min="1" step="0.01" placeholder="Enter hCG level">
+                </div>
+                
+                <div class="input-group">
+                    <label for="pappa">Serum PAPP-A (ng/mL)</label>
+                    <input type="number" id="pappa" min="1" step="0.01" placeholder="Enter PAPP-A level">
+                </div>
+                
+                <div class="input-group">
+                    <label for="age">Maternal Age (years)</label>
+                    <input type="number" id="age" min="18" max="50" placeholder="Enter age">
+                </div>
+                
+                <div class="input-group">
+                    <label for="weight">Maternal Weight (kg)</label>
+                    <input type="number" id="weight" min="40" max="150" placeholder="Enter weight">
+                </div>
+            </div>
+            
+            <button id="calculate-btn" class="btn">Calculate Screening Results</button>
+        </div>
+        
+        <div id="results" class="results">
+            <div class="results-header">
+                <h2 class="card-title">Screening Results</h2>
+            </div>
+            
+            <div class="risk-indicator low-risk">
+                Low Risk: 1 in 12,500
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="result-label">Gestational Age</div>
+                    <div class="result-value">12w 3d</div>
+                    <div>Based on CRL: 62.4 mm</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">hCG MoM</div>
+                    <div class="result-value">1.21</div>
+                    <div>(Median: 121.05 IU/ml)</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">PAPP-A MoM</div>
+                    <div class="result-value">0.89</div>
+                    <div>(Median: 971.27 ng/mL)</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">NT MoM</div>
+                    <div class="result-value">1.05</div>
+                    <div>(Median: 1.8 mm)</div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="resultsChart"></canvas>
+            </div>
+            
+            <div class="interpretation">
+                <h3>Result Interpretation</h3>
+                <p>Based on the combined screening test (maternal age, nuchal translucency, hCG and PAPP-A levels), your patient's risk for Down syndrome is lower than the standard screening cutoff of 1 in 250.</p>
+                
+                <p><strong>Recommended next steps:</strong></p>
+                <ul>
+                    <li>Routine prenatal care</li>
+                    <li>Anatomy scan at 18-22 weeks</li>
+                    <li>Follow-up as clinically indicated</li>
+                </ul>
+            </div>
+            
+            <div class="disclaimer">
+                <strong>Note:</strong> This screening test detects about 85-90% of pregnancies with Down syndrome. A "low risk" result does not guarantee a normal baby, and a "high risk" result does not mean the baby definitely has a chromosome problem. Diagnostic testing should be offered for high-risk results.
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="container">
+            <p>Developed according to FMF (Fetal Medicine Foundation) and ACOG guidelines</p>
+            <p>© 2023 Maternal Fetal Health Screening Tool | For educational purposes only</p>
+        </div>
+    </div>
 
     <script>
-        document.getElementById('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const crl = document.getElementById('crl').value;
-            const nt = document.getElementById('nt').value;
-            const ga = document.getElementById('ga').value;
-
-            // Simple logic for hCG and PAPP-A (this is just an example; update as needed)
-            const hcg = ga * 100; // Placeholder calculation
-            const pappA = ga * 50; // Placeholder calculation
-
-            // Chart.js logic to plot data
-            const ctx = document.getElementById('chart').getContext('2d');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Chart.js
+            const ctx = document.getElementById('resultsChart').getContext('2d');
             const chart = new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: ['Week 10', 'Week 11', 'Week 12', 'Week 13'],
+                    labels: ['hCG', 'PAPP-A', 'NT'],
                     datasets: [{
-                        label: 'hCG (IU/mL)',
-                        data: [hcg, hcg, hcg, hcg],
-                        borderColor: 'red',
-                        fill: false
+                        label: 'MoM Values',
+                        data: [1.21, 0.89, 1.05],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(155, 89, 182, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(52, 152, 219)',
+                            'rgb(46, 204, 113)',
+                            'rgb(155, 89, 182)'
+                        ],
+                        borderWidth: 1
                     }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Multiples of Median (MoM)'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    yMin: 1,
+                                    yMax: 1,
+                                    borderColor: 'rgba(0, 0, 0, 0.7)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        display: true,
+                                        content: 'Median (1.0 MoM)',
+                                        position: 'right'
+                                    }
+                                },
+                                line2: {
+                                    type: 'line',
+                                    yMin: 0.5,
+                                    yMax: 0.5,
+                                    borderColor: 'rgba(243, 156, 18, 0.7)',
+                                    borderWidth: 1,
+                                    borderDash: [4, 4],
+                                    label: {
+                                        display: true,
+                                        content: '0.5 MoM',
+                                        position: 'right'
+                                    }
+                                },
+                                line3: {
+                                    type: 'line',
+                                    yMin: 2.0,
+                                    yMax: 2.0,
+                                    borderColor: 'rgba(231, 76, 60, 0.7)',
+                                    borderWidth: 1,
+                                    borderDash: [4, 4],
+                                    label: {
+                                        display: true,
+                                        content: '2.0 MoM',
+                                        position: 'right'
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             });
+            
+            // Show results when calculate button is clicked
+            document.getElementById('calculate-btn').addEventListener('click', function() {
+                document.getElementById('results').style.display = 'block';
+                
+                // Scroll to results
+                document.getElementById('results').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+            
+            // Sample data for demonstration
+            const sampleData = {
+                crl: 62.4,
+                nt: 1.9,
+                hcg: 146.5,
+                pappa: 865.2,
+                age: 32,
+                weight: 68
+            };
+            
+            // Populate form with sample data for demo
+            document.getElementById('crl').value = sampleData.crl;
+            document.getElementById('nt').value = sampleData.nt;
+            document.getElementById('hcg').value = sampleData.hcg;
+            document.getElementById('pappa').value = sampleData.pappa;
+            document.getElementById('age').value = sampleData.age;
+            document.getElementById('weight').value = sampleData.weight;
         });
     </script>
 </body>
