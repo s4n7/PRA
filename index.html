@@ -15,6 +15,7 @@
             --success: #2ecc71;
             --warning: #f39c12;
             --danger: #e74c3c;
+            --report-bg: #f8f9fa;
         }
         
         * {
@@ -28,6 +29,7 @@
             background-color: #f5f7fa;
             color: var(--dark);
             line-height: 1.6;
+            padding-bottom: 2rem;
         }
         
         .container {
@@ -39,21 +41,24 @@
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             text-align: center;
             border-radius: 0 0 20px 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
+            position: relative;
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 0.5rem;
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         .card {
@@ -66,15 +71,22 @@
         }
         
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
         
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: var(--primary);
             margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-right: 10px;
+            color: var(--secondary);
         }
         
         .input-group {
@@ -86,6 +98,7 @@
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: var(--dark);
+            font-size: 0.95rem;
         }
         
         input, select {
@@ -105,7 +118,7 @@
         
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -120,11 +133,10 @@
             cursor: pointer;
             font-weight: 600;
             transition: background 0.3s, transform 0.2s;
-            display: block;
-            width: 100%;
-            max-width: 300px;
-            margin: 0 auto;
-            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         .btn:hover {
@@ -136,6 +148,22 @@
             transform: translateY(0);
         }
         
+        .btn-print {
+            background: var(--primary);
+        }
+        
+        .btn-reset {
+            background: var(--dark);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
         .results {
             display: none;
             background: white;
@@ -145,19 +173,48 @@
             margin-top: 2rem;
         }
         
-        .results-header {
+        .report-header {
             text-align: center;
             margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .patient-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--report-bg);
+            padding: 1.2rem;
+            border-radius: 10px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 500;
         }
         
         .risk-indicator {
             font-size: 1.8rem;
             font-weight: bold;
-            padding: 1rem;
+            padding: 1.2rem;
             border-radius: 10px;
             text-align: center;
             margin: 1.5rem 0;
-            background: #f8f9fa;
+            background: var(--report-bg);
         }
         
         .low-risk {
@@ -183,10 +240,15 @@
         }
         
         .result-item {
-            background: #f8f9fa;
+            background: var(--report-bg);
             padding: 1.5rem;
             border-radius: 10px;
             text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .result-item:hover {
+            transform: scale(1.03);
         }
         
         .result-value {
@@ -199,6 +261,12 @@
         .result-label {
             color: var(--dark);
             font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .result-sub {
+            color: #666;
+            font-size: 0.9rem;
         }
         
         .chart-container {
@@ -207,7 +275,7 @@
         }
         
         .interpretation {
-            background: #f8f9fa;
+            background: var(--report-bg);
             padding: 1.5rem;
             border-radius: 10px;
             margin-top: 1.5rem;
@@ -216,6 +284,9 @@
         .interpretation h3 {
             color: var(--primary);
             margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .footer {
@@ -232,6 +303,49 @@
             padding: 1rem;
             margin: 1.5rem 0;
             border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .logo-icon {
+            background: var(--secondary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .results, .results * {
+                visibility: visible;
+            }
+            .results {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .btn-group {
+                display: none;
+            }
         }
         
         @media (max-width: 768px) {
@@ -244,7 +358,11 @@
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
             }
         }
     </style>
@@ -252,23 +370,45 @@
 <body>
     <header>
         <div class="container">
-            <h1>First Trimester Maternal Serum Screening</h1>
-            <p class="subtitle">Comprehensive risk assessment for chromosomal abnormalities</p>
+            <div class="logo">
+                <div class="logo-icon">MS</div>
+                <h1>First Trimester Maternal Serum Screening</h1>
+            </div>
+            <p class="subtitle">Comprehensive risk assessment for chromosomal abnormalities based on FMF and ACOG guidelines</p>
         </div>
     </header>
     
     <div class="container">
         <div class="card">
-            <h2 class="card-title">Patient Information</h2>
+            <h2 class="card-title"><i class="fas fa-user-circle"></i> Patient Information</h2>
             <div class="disclaimer">
                 <strong>Important:</strong> This screening tool uses established algorithms and population-specific medians for Asian women. Results should be interpreted by a qualified healthcare professional.
             </div>
             
             <div class="grid">
                 <div class="input-group">
+                    <label for="patient-name">Patient Name</label>
+                    <input type="text" id="patient-name" placeholder="Enter patient's full name">
+                </div>
+                
+                <div class="input-group">
+                    <label for="patient-id">Patient ID</label>
+                    <input type="text" id="patient-id" placeholder="Enter patient ID">
+                </div>
+                
+                <div class="input-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob">
+                </div>
+                
+                <div class="input-group">
+                    <label for="collection-date">Serum Collection Date</label>
+                    <input type="date" id="collection-date">
+                </div>
+                
+                <div class="input-group">
                     <label for="crl">Crown-Rump Length (CRL) in mm</label>
                     <input type="number" id="crl" min="30" max="90" step="0.1" placeholder="Enter CRL (30-90mm)">
-                    <small>Gestational age: 10-14 weeks</small>
                 </div>
                 
                 <div class="input-group">
@@ -287,22 +427,55 @@
                 </div>
                 
                 <div class="input-group">
-                    <label for="age">Maternal Age (years)</label>
-                    <input type="number" id="age" min="18" max="50" placeholder="Enter age">
-                </div>
-                
-                <div class="input-group">
                     <label for="weight">Maternal Weight (kg)</label>
                     <input type="number" id="weight" min="40" max="150" placeholder="Enter weight">
                 </div>
+                
+                <div class="input-group">
+                    <label for="ethnicity">Ethnicity</label>
+                    <select id="ethnicity">
+                        <option value="asian" selected>Asian</option>
+                        <option value="caucasian">Caucasian</option>
+                        <option value="african">African</option>
+                        <option value="hispanic">Hispanic</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
             </div>
             
-            <button id="calculate-btn" class="btn">Calculate Screening Results</button>
+            <div class="btn-group">
+                <button id="calculate-btn" class="btn">
+                    <i class="fas fa-calculator"></i> Calculate Screening Results
+                </button>
+                <button id="reset-btn" class="btn btn-reset">
+                    <i class="fas fa-redo"></i> Reset Form
+                </button>
+            </div>
         </div>
         
         <div id="results" class="results">
-            <div class="results-header">
-                <h2 class="card-title">Screening Results</h2>
+            <div class="report-header">
+                <h2 class="card-title"><i class="fas fa-file-medical"></i> Screening Results Report</h2>
+                <p>First Trimester Combined Screening Test</p>
+            </div>
+            
+            <div class="patient-info">
+                <div class="info-item">
+                    <span class="info-label">Patient Name</span>
+                    <span class="info-value" id="report-name">Sarah Johnson</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Patient ID</span>
+                    <span class="info-value" id="report-id">PT-2023-0456</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Age at Collection</span>
+                    <span class="info-value" id="report-age">32 years, 4 months, 15 days</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Collection Date</span>
+                    <span class="info-value" id="report-date">June 15, 2025</span>
+                </div>
             </div>
             
             <div class="risk-indicator low-risk">
@@ -313,25 +486,25 @@
                 <div class="result-item">
                     <div class="result-label">Gestational Age</div>
                     <div class="result-value">12w 3d</div>
-                    <div>Based on CRL: 62.4 mm</div>
+                    <div class="result-sub">Based on CRL: 62.4 mm</div>
                 </div>
                 
                 <div class="result-item">
                     <div class="result-label">hCG MoM</div>
                     <div class="result-value">1.21</div>
-                    <div>(Median: 121.05 IU/ml)</div>
+                    <div class="result-sub">(Median: 121.05 IU/ml)</div>
                 </div>
                 
                 <div class="result-item">
                     <div class="result-label">PAPP-A MoM</div>
                     <div class="result-value">0.89</div>
-                    <div>(Median: 971.27 ng/mL)</div>
+                    <div class="result-sub">(Median: 971.27 ng/mL)</div>
                 </div>
                 
                 <div class="result-item">
                     <div class="result-label">NT MoM</div>
                     <div class="result-value">1.05</div>
-                    <div>(Median: 1.8 mm)</div>
+                    <div class="result-sub">(Median: 1.8 mm)</div>
                 </div>
             </div>
             
@@ -340,7 +513,7 @@
             </div>
             
             <div class="interpretation">
-                <h3>Result Interpretation</h3>
+                <h3><i class="fas fa-stethoscope"></i> Result Interpretation</h3>
                 <p>Based on the combined screening test (maternal age, nuchal translucency, hCG and PAPP-A levels), your patient's risk for Down syndrome is lower than the standard screening cutoff of 1 in 250.</p>
                 
                 <p><strong>Recommended next steps:</strong></p>
@@ -354,6 +527,15 @@
             <div class="disclaimer">
                 <strong>Note:</strong> This screening test detects about 85-90% of pregnancies with Down syndrome. A "low risk" result does not guarantee a normal baby, and a "high risk" result does not mean the baby definitely has a chromosome problem. Diagnostic testing should be offered for high-risk results.
             </div>
+            
+            <div class="btn-group">
+                <button id="print-btn" class="btn btn-print">
+                    <i class="fas fa-print"></i> Print Report
+                </button>
+                <button id="back-btn" class="btn btn-reset">
+                    <i class="fas fa-arrow-left"></i> Back to Form
+                </button>
+            </div>
         </div>
     </div>
     
@@ -364,8 +546,22 @@
         </div>
     </div>
 
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Set default dates
+            const today = new Date();
+            const collectionDate = new Date();
+            const dob = new Date();
+            dob.setFullYear(today.getFullYear() - 32);
+            dob.setMonth(1); // February
+            dob.setDate(1);
+            
+            document.getElementById('collection-date').valueAsDate = collectionDate;
+            document.getElementById('dob').valueAsDate = dob;
+            
             // Initialize Chart.js
             const ctx = document.getElementById('resultsChart').getContext('2d');
             const chart = new Chart(ctx, {
@@ -396,7 +592,11 @@
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Multiples of Median (MoM)'
+                                text: 'Multiples of Median (MoM)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
                             },
                             grid: {
                                 color: 'rgba(0, 0, 0, 0.05)'
@@ -412,6 +612,13 @@
                         legend: {
                             display: false
                         },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.y.toFixed(2)} MoM`;
+                                }
+                            }
+                        },
                         annotation: {
                             annotations: {
                                 line1: {
@@ -424,7 +631,8 @@
                                     label: {
                                         display: true,
                                         content: 'Median (1.0 MoM)',
-                                        position: 'right'
+                                        position: 'end',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.8)'
                                     }
                                 },
                                 line2: {
@@ -434,11 +642,6 @@
                                     borderColor: 'rgba(243, 156, 18, 0.7)',
                                     borderWidth: 1,
                                     borderDash: [4, 4],
-                                    label: {
-                                        display: true,
-                                        content: '0.5 MoM',
-                                        position: 'right'
-                                    }
                                 },
                                 line3: {
                                     type: 'line',
@@ -447,11 +650,6 @@
                                     borderColor: 'rgba(231, 76, 60, 0.7)',
                                     borderWidth: 1,
                                     borderDash: [4, 4],
-                                    label: {
-                                        display: true,
-                                        content: '2.0 MoM',
-                                        position: 'right'
-                                    }
                                 }
                             }
                         }
@@ -461,6 +659,26 @@
             
             // Show results when calculate button is clicked
             document.getElementById('calculate-btn').addEventListener('click', function() {
+                // Get form values
+                const patientName = document.getElementById('patient-name').value || "Sarah Johnson";
+                const patientId = document.getElementById('patient-id').value || "PT-2023-0456";
+                const dob = new Date(document.getElementById('dob').value);
+                const collectionDate = new Date(document.getElementById('collection-date').value);
+                
+                // Calculate age
+                const age = calculateAge(dob, collectionDate);
+                
+                // Format collection date
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = collectionDate.toLocaleDateString('en-US', options);
+                
+                // Update report
+                document.getElementById('report-name').textContent = patientName;
+                document.getElementById('report-id').textContent = patientId;
+                document.getElementById('report-age').textContent = age;
+                document.getElementById('report-date').textContent = formattedDate;
+                
+                // Show results
                 document.getElementById('results').style.display = 'block';
                 
                 // Scroll to results
@@ -469,13 +687,45 @@
                 });
             });
             
+            // Print report
+            document.getElementById('print-btn').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // Back to form
+            document.getElementById('back-btn').addEventListener('click', function() {
+                document.getElementById('results').style.display = 'none';
+            });
+            
+            // Reset form
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                document.getElementById('patient-name').value = '';
+                document.getElementById('patient-id').value = '';
+                document.getElementById('crl').value = '';
+                document.getElementById('nt').value = '';
+                document.getElementById('hcg').value = '';
+                document.getElementById('pappa').value = '';
+                document.getElementById('weight').value = '';
+                
+                // Reset dates to defaults
+                const today = new Date();
+                const dob = new Date();
+                dob.setFullYear(today.getFullYear() - 32);
+                dob.setMonth(1);
+                dob.setDate(1);
+                
+                document.getElementById('collection-date').valueAsDate = today;
+                document.getElementById('dob').valueAsDate = dob;
+                
+                alert('Form has been reset!');
+            });
+            
             // Sample data for demonstration
             const sampleData = {
                 crl: 62.4,
                 nt: 1.9,
                 hcg: 146.5,
                 pappa: 865.2,
-                age: 32,
                 weight: 68
             };
             
@@ -484,8 +734,19 @@
             document.getElementById('nt').value = sampleData.nt;
             document.getElementById('hcg').value = sampleData.hcg;
             document.getElementById('pappa').value = sampleData.pappa;
-            document.getElementById('age').value = sampleData.age;
             document.getElementById('weight').value = sampleData.weight;
+            
+            // Function to calculate age in years, months and days
+            function calculateAge(birthDate, collectionDate) {
+                const diff = collectionDate - birthDate;
+                const ageDate = new Date(diff);
+                
+                const years = ageDate.getUTCFullYear() - 1970;
+                const months = ageDate.getUTCMonth();
+                const days = ageDate.getUTCDate() - 1;
+                
+                return `${years} years, ${months} months, ${days} days`;
+            }
         });
     </script>
 </body>
