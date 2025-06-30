@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>First Trimester Maternal Serum Screening</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #2c3e50;
@@ -12,9 +13,9 @@
             --accent: #e74c3c;
             --light: #ecf0f1;
             --dark: #34495e;
-            --success: #2ecc71;
+            --success: #27ae60;
             --warning: #f39c12;
-            --danger: #e74c3c;
+            --danger: #c0392b;
             --report-bg: #f8f9fa;
         }
         
@@ -33,13 +34,13 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
         
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), #1a2530);
             color: white;
             padding: 1.5rem 2rem;
             text-align: center;
@@ -70,10 +71,6 @@
             transition: transform 0.3s ease;
         }
         
-        .card:hover {
-            transform: translateY(-3px);
-        }
-        
         .card-title {
             font-size: 1.4rem;
             color: var(--primary);
@@ -82,11 +79,7 @@
             border-bottom: 2px solid var(--secondary);
             display: flex;
             align-items: center;
-        }
-        
-        .card-title i {
-            margin-right: 10px;
-            color: var(--secondary);
+            gap: 10px;
         }
         
         .input-group {
@@ -180,9 +173,23 @@
             border-bottom: 2px solid var(--secondary);
         }
         
+        .clinic-info {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .clinic-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
         .patient-info {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
             margin-bottom: 1.5rem;
             background: var(--report-bg);
@@ -220,21 +227,24 @@
         .low-risk {
             color: var(--success);
             border: 3px solid var(--success);
+            background: rgba(39, 174, 96, 0.1) !important;
         }
         
         .medium-risk {
             color: var(--warning);
             border: 3px solid var(--warning);
+            background: rgba(243, 156, 18, 0.1) !important;
         }
         
         .high-risk {
             color: var(--danger);
             border: 3px solid var(--danger);
+            background: rgba(192, 57, 43, 0.1) !important;
         }
         
         .result-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -244,15 +254,10 @@
             padding: 1.5rem;
             border-radius: 10px;
             text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .result-item:hover {
-            transform: scale(1.03);
         }
         
         .result-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: var(--secondary);
             margin: 0.5rem 0;
@@ -329,6 +334,11 @@
         
         /* Print styles */
         @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
             body * {
                 visibility: hidden;
             }
@@ -342,8 +352,36 @@
                 width: 100%;
                 box-shadow: none;
                 border-radius: 0;
+                padding: 1.5rem;
+                margin: 0;
             }
             .btn-group {
+                display: none;
+            }
+            .chart-container {
+                height: 200px;
+            }
+            .card-title {
+                font-size: 1.2rem;
+            }
+            .result-value {
+                font-size: 1.5rem;
+            }
+            .risk-indicator {
+                font-size: 1.5rem;
+                padding: 0.8rem;
+            }
+            .clinic-info {
+                margin-top: 0;
+            }
+            .disclaimer {
+                font-size: 0.8rem;
+                padding: 0.8rem;
+            }
+            .footer {
+                display: none;
+            }
+            header {
                 display: none;
             }
         }
@@ -364,6 +402,10 @@
             .btn-group {
                 flex-direction: column;
             }
+            
+            .container {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -371,7 +413,7 @@
     <header>
         <div class="container">
             <div class="logo">
-                <div class="logo-icon">MS</div>
+                <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
                 <h1>First Trimester Maternal Serum Screening</h1>
             </div>
             <p class="subtitle">Comprehensive risk assessment for chromosomal abnormalities based on FMF and ACOG guidelines</p>
@@ -380,59 +422,59 @@
     
     <div class="container">
         <div class="card">
-            <h2 class="card-title"><i class="fas fa-user-circle"></i> Patient Information</h2>
+            <h2 class="card-title"><i class="fas fa-user-injured"></i> Patient Information</h2>
             <div class="disclaimer">
-                <strong>Important:</strong> This screening tool uses established algorithms and population-specific medians for Asian women. Results should be interpreted by a qualified healthcare professional.
+                <strong>Important:</strong> This screening tool uses established algorithms and population-specific medians. Results should be interpreted by a qualified healthcare professional.
             </div>
             
             <div class="grid">
                 <div class="input-group">
-                    <label for="patient-name">Patient Name</label>
-                    <input type="text" id="patient-name" placeholder="Enter patient's full name">
+                    <label for="patient-name"><i class="fas fa-user"></i> Patient Name</label>
+                    <input type="text" id="patient-name" placeholder="Enter patient's full name" value="Sarah Johnson">
                 </div>
                 
                 <div class="input-group">
-                    <label for="patient-id">Patient ID</label>
-                    <input type="text" id="patient-id" placeholder="Enter patient ID">
+                    <label for="patient-id"><i class="fas fa-id-card"></i> Patient ID</label>
+                    <input type="text" id="patient-id" placeholder="Enter patient ID" value="PT-2023-0456">
                 </div>
                 
                 <div class="input-group">
-                    <label for="dob">Date of Birth</label>
+                    <label for="dob"><i class="fas fa-birthday-cake"></i> Date of Birth</label>
                     <input type="date" id="dob">
                 </div>
                 
                 <div class="input-group">
-                    <label for="collection-date">Serum Collection Date</label>
+                    <label for="collection-date"><i class="fas fa-calendar-alt"></i> Serum Collection Date</label>
                     <input type="date" id="collection-date">
                 </div>
                 
                 <div class="input-group">
-                    <label for="crl">Crown-Rump Length (CRL) in mm</label>
-                    <input type="number" id="crl" min="30" max="90" step="0.1" placeholder="Enter CRL (30-90mm)">
+                    <label for="crl"><i class="fas fa-ruler"></i> Crown-Rump Length (CRL) in mm</label>
+                    <input type="number" id="crl" min="30" max="90" step="0.1" placeholder="Enter CRL (30-90mm)" value="62.4">
                 </div>
                 
                 <div class="input-group">
-                    <label for="nt">Nuchal Translucency (NT) in mm</label>
-                    <input type="number" id="nt" min="0.5" max="8.0" step="0.1" placeholder="Enter NT measurement">
+                    <label for="nt"><i class="fas fa-wave-square"></i> Nuchal Translucency (NT) in mm</label>
+                    <input type="number" id="nt" min="0.5" max="8.0" step="0.1" placeholder="Enter NT measurement" value="1.9">
                 </div>
                 
                 <div class="input-group">
-                    <label for="hcg">Serum hCG (IU/ml)</label>
-                    <input type="number" id="hcg" min="1" step="0.01" placeholder="Enter hCG level">
+                    <label for="hcg"><i class="fas fa-vial"></i> Serum hCG (IU/ml)</label>
+                    <input type="number" id="hcg" min="1" step="0.01" placeholder="Enter hCG level" value="146.5">
                 </div>
                 
                 <div class="input-group">
-                    <label for="pappa">Serum PAPP-A (ng/mL)</label>
-                    <input type="number" id="pappa" min="1" step="0.01" placeholder="Enter PAPP-A level">
+                    <label for="pappa"><i class="fas fa-vial"></i> Serum PAPP-A (ng/mL)</label>
+                    <input type="number" id="pappa" min="1" step="0.01" placeholder="Enter PAPP-A level" value="865.2">
                 </div>
                 
                 <div class="input-group">
-                    <label for="weight">Maternal Weight (kg)</label>
-                    <input type="number" id="weight" min="40" max="150" placeholder="Enter weight">
+                    <label for="weight"><i class="fas fa-weight"></i> Maternal Weight (kg)</label>
+                    <input type="number" id="weight" min="40" max="150" placeholder="Enter weight" value="68">
                 </div>
                 
                 <div class="input-group">
-                    <label for="ethnicity">Ethnicity</label>
+                    <label for="ethnicity"><i class="fas fa-globe-asia"></i> Ethnicity</label>
                     <select id="ethnicity">
                         <option value="asian" selected>Asian</option>
                         <option value="caucasian">Caucasian</option>
@@ -454,9 +496,15 @@
         </div>
         
         <div id="results" class="results">
+            <div class="clinic-info">
+                <div class="clinic-name">Maternal Fetal Health Center</div>
+                <div>123 Medical Drive, Suite 100 | Anytown, ST 12345</div>
+                <div>Phone: (555) 123-4567 | www.mfhc.example.com</div>
+            </div>
+            
             <div class="report-header">
-                <h2 class="card-title"><i class="fas fa-file-medical"></i> Screening Results Report</h2>
-                <p>First Trimester Combined Screening Test</p>
+                <h2 class="card-title"><i class="fas fa-file-medical"></i> First Trimester Screening Report</h2>
+                <p>Combined Screening Test for Chromosomal Abnormalities</p>
             </div>
             
             <div class="patient-info">
@@ -476,10 +524,18 @@
                     <span class="info-label">Collection Date</span>
                     <span class="info-value" id="report-date">June 15, 2025</span>
                 </div>
+                <div class="info-item">
+                    <span class="info-label">Ethnicity</span>
+                    <span class="info-value" id="report-ethnicity">Asian</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Weight</span>
+                    <span class="info-value" id="report-weight">68 kg</span>
+                </div>
             </div>
             
             <div class="risk-indicator low-risk">
-                Low Risk: 1 in 12,500
+                <i class="fas fa-check-circle"></i> Low Risk: 1 in 12,500
             </div>
             
             <div class="result-grid">
@@ -518,14 +574,23 @@
                 
                 <p><strong>Recommended next steps:</strong></p>
                 <ul>
-                    <li>Routine prenatal care</li>
-                    <li>Anatomy scan at 18-22 weeks</li>
+                    <li>Routine prenatal care with regular checkups</li>
+                    <li>Anatomy scan at 18-22 weeks gestation</li>
+                    <li>Genetic counseling if risk factors change</li>
                     <li>Follow-up as clinically indicated</li>
                 </ul>
             </div>
             
             <div class="disclaimer">
                 <strong>Note:</strong> This screening test detects about 85-90% of pregnancies with Down syndrome. A "low risk" result does not guarantee a normal baby, and a "high risk" result does not mean the baby definitely has a chromosome problem. Diagnostic testing should be offered for high-risk results.
+            </div>
+            
+            <div class="signature">
+                <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ddd; text-align: right;">
+                    <div style="margin-bottom: 0.5rem;">Date: <span id="report-today">June 30, 2025</span></div>
+                    <div>_________________________</div>
+                    <div>Healthcare Provider Signature</div>
+                </div>
             </div>
             
             <div class="btn-group">
@@ -542,13 +607,10 @@
     <div class="footer">
         <div class="container">
             <p>Developed according to FMF (Fetal Medicine Foundation) and ACOG guidelines</p>
-            <p>© 2023 Maternal Fetal Health Screening Tool | For educational purposes only</p>
+            <p>© 2023 Maternal Fetal Health Screening Tool | For clinical use</p>
         </div>
     </div>
 
-    <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Set default dates
@@ -559,12 +621,16 @@
             dob.setMonth(1); // February
             dob.setDate(1);
             
+            // Format today's date for report
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('report-today').textContent = today.toLocaleDateString('en-US', options);
+            
             document.getElementById('collection-date').valueAsDate = collectionDate;
             document.getElementById('dob').valueAsDate = dob;
             
             // Initialize Chart.js
             const ctx = document.getElementById('resultsChart').getContext('2d');
-            const chart = new Chart(ctx, {
+            let chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: ['hCG', 'PAPP-A', 'NT'],
@@ -600,6 +666,9 @@
                             },
                             grid: {
                                 color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                stepSize: 0.5
                             }
                         },
                         x: {
@@ -664,9 +733,35 @@
                 const patientId = document.getElementById('patient-id').value || "PT-2023-0456";
                 const dob = new Date(document.getElementById('dob').value);
                 const collectionDate = new Date(document.getElementById('collection-date').value);
+                const crl = parseFloat(document.getElementById('crl').value) || 62.4;
+                const nt = parseFloat(document.getElementById('nt').value) || 1.9;
+                const hcg = parseFloat(document.getElementById('hcg').value) || 146.5;
+                const pappa = parseFloat(document.getElementById('pappa').value) || 865.2;
+                const weight = parseFloat(document.getElementById('weight').value) || 68;
+                const ethnicity = document.getElementById('ethnicity').value;
                 
-                // Calculate age
+                // Calculate gestational age from CRL (Robinson formula)
+                const gaDays = Math.round(8.052 * Math.sqrt(crl) + 23.73);
+                const gaWeeks = Math.floor(gaDays / 7);
+                const gaDaysRemainder = Math.floor(gaDays % 7);
+                const gaDisplay = `${gaWeeks}w ${gaDaysRemainder}d`;
+                
+                // Calculate medians based on GA using the provided formulas
+                const medianHCG = Math.pow(10, (-0.073895 * gaDays + 2.986791));
+                const medianPAPP = Math.pow(10, (0.065670 * Math.pow(gaDays, 2) - 1.433004 * gaDays + 10.653544));
+                
+                // Calculate NT median based on GA (standard model)
+                const medianNT = 1.0 + 0.05 * ((gaDays - 70) / 7);
+                
+                // Calculate MoM values
+                const hcgMoM = (hcg / medianHCG).toFixed(2);
+                const pappaMoM = (pappa / medianPAPP).toFixed(2);
+                const ntMoM = (nt / medianNT).toFixed(2);
+                
+                // Calculate risk based on MoM values and age
                 const age = calculateAge(dob, collectionDate);
+                const riskValue = calculateRisk(parseInt(age.split(' ')[0]), hcgMoM, pappaMoM, ntMoM);
+                const riskDisplay = formatRisk(riskValue);
                 
                 // Format collection date
                 const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -677,6 +772,29 @@
                 document.getElementById('report-id').textContent = patientId;
                 document.getElementById('report-age').textContent = age;
                 document.getElementById('report-date').textContent = formattedDate;
+                document.getElementById('report-ethnicity').textContent = ethnicity.charAt(0).toUpperCase() + ethnicity.slice(1);
+                document.getElementById('report-weight').textContent = weight + " kg";
+                
+                // Update GA display
+                document.querySelectorAll('.result-value')[0].textContent = gaDisplay;
+                document.querySelectorAll('.result-sub')[0].textContent = `Based on CRL: ${crl.toFixed(1)} mm`;
+                
+                // Update MoM values
+                document.querySelectorAll('.result-value')[1].textContent = hcgMoM;
+                document.querySelectorAll('.result-sub')[1].textContent = `(Median: ${medianHCG.toFixed(2)} IU/ml)`;
+                document.querySelectorAll('.result-value')[2].textContent = pappaMoM;
+                document.querySelectorAll('.result-sub')[2].textContent = `(Median: ${medianPAPP.toFixed(2)} ng/mL)`;
+                document.querySelectorAll('.result-value')[3].textContent = ntMoM;
+                document.querySelectorAll('.result-sub')[3].textContent = `(Median: ${medianNT.toFixed(2)} mm)`;
+                
+                // Update risk indicator
+                const riskIndicator = document.querySelector('.risk-indicator');
+                riskIndicator.innerHTML = `<i class="fas ${riskDisplay.icon}"></i> ${riskDisplay.text}`;
+                riskIndicator.className = 'risk-indicator ' + riskDisplay.riskClass;
+                
+                // Update chart
+                chart.data.datasets[0].data = [parseFloat(hcgMoM), parseFloat(pappaMoM), parseFloat(ntMoM)];
+                chart.update();
                 
                 // Show results
                 document.getElementById('results').style.display = 'block';
@@ -716,36 +834,68 @@
                 
                 document.getElementById('collection-date').valueAsDate = today;
                 document.getElementById('dob').valueAsDate = dob;
-                
-                alert('Form has been reset!');
             });
-            
-            // Sample data for demonstration
-            const sampleData = {
-                crl: 62.4,
-                nt: 1.9,
-                hcg: 146.5,
-                pappa: 865.2,
-                weight: 68
-            };
-            
-            // Populate form with sample data for demo
-            document.getElementById('crl').value = sampleData.crl;
-            document.getElementById('nt').value = sampleData.nt;
-            document.getElementById('hcg').value = sampleData.hcg;
-            document.getElementById('pappa').value = sampleData.pappa;
-            document.getElementById('weight').value = sampleData.weight;
             
             // Function to calculate age in years, months and days
             function calculateAge(birthDate, collectionDate) {
-                const diff = collectionDate - birthDate;
-                const ageDate = new Date(diff);
+                let years = collectionDate.getFullYear() - birthDate.getFullYear();
+                let months = collectionDate.getMonth() - birthDate.getMonth();
+                let days = collectionDate.getDate() - birthDate.getDate();
                 
-                const years = ageDate.getUTCFullYear() - 1970;
-                const months = ageDate.getUTCMonth();
-                const days = ageDate.getUTCDate() - 1;
+                if (days < 0) {
+                    months--;
+                    days += new Date(collectionDate.getFullYear(), collectionDate.getMonth(), 0).getDate();
+                }
+                
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
                 
                 return `${years} years, ${months} months, ${days} days`;
+            }
+            
+            // Function to calculate risk based on MoM values and age
+            function calculateRisk(age, hcgMoM, pappaMoM, ntMoM) {
+                // Base risk based on age
+                let baseRisk = Math.exp(0.15 * (age - 30)) / 1000;
+                
+                // Adjust based on biomarkers (simplified model)
+                const hcgFactor = Math.min(3, Math.max(0.3, hcgMoM));
+                const pappaFactor = Math.min(3, Math.max(0.3, 1/pappaMoM));
+                const ntFactor = Math.min(3, Math.max(0.3, ntMoM));
+                
+                // Combined risk
+                const combinedRisk = baseRisk * hcgFactor * pappaFactor * ntFactor;
+                
+                // Return risk as probability (1 in X)
+                return 1 / combinedRisk;
+            }
+            
+            // Function to format risk for display
+            function formatRisk(riskValue) {
+                const riskNum = Math.round(riskValue);
+                let riskText, riskClass, icon;
+                
+                if (riskNum < 100) {
+                    riskText = `High Risk: 1 in ${riskNum}`;
+                    riskClass = 'high-risk';
+                    icon = 'fa-exclamation-triangle';
+                } else if (riskNum < 250) {
+                    riskText = `Moderate Risk: 1 in ${riskNum}`;
+                    riskClass = 'medium-risk';
+                    icon = 'fa-exclamation-circle';
+                } else {
+                    riskText = `Low Risk: 1 in ${riskNum}`;
+                    riskClass = 'low-risk';
+                    icon = 'fa-check-circle';
+                }
+                
+                return {
+                    text: riskText,
+                    riskClass: riskClass,
+                    icon: icon
+                };
             }
         });
     </script>
