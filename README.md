@@ -1,8 +1,5 @@
 # PRA
-First Trimester Screening Web App
-
-
-A web app for calculating the risk in First Trimester Maternal Serum Screening.
+First Trimester Maternal Serum Screening Web App
 
 
 **https://s4n7.github.io/PRA/**
