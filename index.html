@@ -14,113 +14,128 @@
             body * {
                 visibility: hidden;
             }
-            #resultsSection, #resultsSection * {
+            #reportPrintContainer, #reportPrintContainer * {
                 visibility: visible;
             }
-            #resultsSection {
+            #reportPrintContainer {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
                 margin: 0;
-                padding: 0;
+                padding: 20px;
                 box-shadow: none;
             }
             .no-print {
                 display: none !important;
             }
-            .report-container {
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                box-shadow: none;
-            }
-            .print-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 10px;
-                border-bottom: 2px solid #1e40af;
-                padding-bottom: 5px;
-            }
-            .print-header img {
-                height: 50px;
-            }
-            .compact-table {
-                font-size: 12px;
-                padding: 4px;
-            }
-            .compact-table th, .compact-table td {
-                padding: 4px 8px;
-            }
-            .risk-card {
-                padding: 8px;
-                margin-bottom: 8px;
+            .print-only {
+                display: block !important;
             }
         }
-        .custom-shadow {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        .print-only {
+            display: none;
         }
         .risk-high {
-            background-color: rgba(239, 68, 68, 0.2);
+            background-color: rgba(239, 68, 68, 0.1);
             border-left: 4px solid rgb(239, 68, 68);
         }
         .risk-moderate {
-            background-color: rgba(234, 179, 8, 0.2);
+            background-color: rgba(234, 179, 8, 0.1);
             border-left: 4px solid rgb(234, 179, 8);
         }
         .risk-low {
-            background-color: rgba(34, 197, 94, 0.2);
+            background-color: rgba(34, 197, 94, 0.1);
             border-left: 4px solid rgb(34, 197, 94);
         }
-        .ga-controls {
+        .input-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .section-title {
             display: flex;
-            gap: 10px;
             align-items: center;
+            gap: 10px;
+            color: #2c5282;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .report-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .report-header {
+            border-bottom: 2px solid #1e40af;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .report-table th, .report-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 15px;
+            text-align: left;
+        }
+        .report-table th {
+            background-color: #f7fafc;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .report-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .risk-card {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .chart-container {
+            height: 250px;
+            margin: 25px 0;
         }
         .disclaimer {
             background-color: #f3f4f6;
             border-top: 2px solid #e5e7eb;
-            padding: 10px;
-            font-size: 0.7rem;
+            padding: 15px;
+            font-size: 0.8rem;
             color: #6b7280;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px;
         }
         .developed-by {
             text-align: center;
-            padding: 8px;
-            font-size: 0.8rem;
+            padding: 10px;
+            font-size: 0.85rem;
             color: #4b5563;
             background-color: #f9fafb;
             border-top: 1px solid #e5e7eb;
         }
-        .compact-results {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .date-controls {
-            display: flex;
-            gap: 10px;
-        }
-        .date-controls > div {
-            flex: 1;
-        }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <div class="container mx-auto px-4 py-6">
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-blue-700 to-indigo-800 px-6 py-3">
-                <h1 class="text-2xl font-bold text-white">First Trimester Screening</h1>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Input Form Section -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div class="bg-gradient-to-r from-blue-700 to-indigo-800 px-6 py-4">
+                <h1 class="text-2xl font-bold text-white"><i class="fas fa-baby mr-2"></i>First Trimester Screening</h1>
                 <p class="text-blue-100 text-sm">Comprehensive risk assessment for chromosomal abnormalities</p>
             </div>
             
             <div class="p-6">
                 <!-- Patient Information -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-2">
-                        <i class="fas fa-user-circle mr-2 text-blue-600"></i>Patient Information
+                <div class="input-card">
+                    <h2 class="section-title">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Patient Information</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div>
@@ -148,9 +163,10 @@
                 </div>
                 
                 <!-- Dates Section -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-2">
-                        <i class="fas fa-calendar-alt mr-2 text-purple-600"></i>Dates
+                <div class="input-card">
+                    <h2 class="section-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Dates</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
@@ -169,9 +185,10 @@
                 </div>
                 
                 <!-- Pregnancy Details -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-2">
-                        <i class="fas fa-baby mr-2 text-pink-500"></i>Pregnancy Details
+                <div class="input-card">
+                    <h2 class="section-title">
+                        <i class="fas fa-baby"></i>
+                        <span>Pregnancy Details</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="flex flex-col">
@@ -186,7 +203,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Gestational Age (weeks+days)</label>
-                            <div class="flex ga-controls">
+                            <div class="flex">
                                 <div class="flex w-full">
                                     <input type="number" id="weeks" min="10" max="13" class="w-1/2 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Weeks">
                                     <input type="number" id="days" min="0" max="6" class="w-1/2 px-3 py-2 border border-gray-300 rounded-r-md border-l-0 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Days">
@@ -212,9 +229,10 @@
                 </div>
                 
                 <!-- Biochemical Markers -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-2">
-                        <i class="fas fa-flask mr-2 text-green-600"></i>Biochemical Markers
+                <div class="input-card">
+                    <h2 class="section-title">
+                        <i class="fas fa-flask"></i>
+                        <span>Biochemical Markers</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -229,9 +247,10 @@
                 </div>
                 
                 <!-- Ultrasound Findings -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-2">
-                        <i class="fas fa-procedures mr-2 text-purple-600"></i>Ultrasound Findings
+                <div class="input-card">
+                    <h2 class="section-title">
+                        <i class="fas fa-procedures"></i>
+                        <span>Ultrasound Findings</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -249,9 +268,10 @@
                 </div>
                 
                 <!-- Risk Factors -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-2">
-                        <i class="fas fa-exclamation-triangle mr-2 text-yellow-600"></i>Risk Factors
+                <div class="input-card">
+                    <h2 class="section-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Risk Factors</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -271,7 +291,7 @@
                 </div>
                 
                 <!-- Calculate Button -->
-                <div class="flex justify-center mt-6">
+                <div class="flex justify-center mt-6 no-print">
                     <button id="calculateBtn" class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
                         <i class="fas fa-calculator mr-2"></i>Calculate Risk
                     </button>
@@ -279,139 +299,135 @@
             </div>
         </div>
         
-        <!-- Results Section (Initially Hidden) -->
-        <div id="resultsSection" class="hidden bg-white rounded-lg shadow-lg overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-green-600 to-teal-700 px-6 py-3">
-                <h2 class="text-2xl font-bold text-white">Screening Results</h2>
-                <p class="text-green-100 text-sm">First Trimester Combined Screening Report</p>
-            </div>
-            
-            <div class="p-6 compact-results">
-                <!-- Patient Summary -->
-                <div class="mb-4">
-                    <div class="print-header">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800">Fetal Health Screening Report</h3>
-                            <p class="text-xs text-gray-600">Comprehensive First Trimester Assessment</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xs text-gray-600">Report Date: <span id="resultReportDate"></span></p>
-                            <p class="text-xs text-gray-600">Patient ID: <span id="resultId"></span></p>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <table class="w-full border border-gray-200 compact-table">
-                            <tr>
-                                <th class="bg-gray-100 text-left">Patient Name</th>
-                                <td id="resultName"></td>
-                            </tr>
-                            <tr>
-                                <th class="bg-gray-100 text-left">Date of Birth</th>
-                                <td id="resultDob"></td>
-                            </tr>
-                            <tr>
-                                <th class="bg-gray-100 text-left">Maternal Age</th>
-                                <td id="resultMaternalAge"></td>
-                            </tr>
-                        </table>
-                        
-                        <table class="w-full border border-gray-200 compact-table">
-                            <tr>
-                                <th class="bg-gray-100 text-left">Sample Collection</th>
-                                <td id="resultCollectionDate"></td>
-                            </tr>
-                            <tr>
-                                <th class="bg-gray-100 text-left">Ultrasound Date</th>
-                                <td id="resultUltrasoundDate"></td>
-                            </tr>
-                            <tr>
-                                <th class="bg-gray-100 text-left">Gestational Age</th>
-                                <td id="resultGestationalAge"></td>
-                            </tr>
-                        </table>
-                    </div>
+        <!-- Report Section (Initially Hidden) -->
+        <div id="reportSection" class="hidden">
+            <div class="report-card">
+                <!-- Report Header -->
+                <div class="report-header">
+                    <h1 class="text-3xl font-bold text-blue-800">
+                        First Trimester Maternal Serum Screening Report
+                    </h1>
+                    <p class="text-sm text-gray-600">Generated on: <span id="reportDateDisplay"></span></p>
                 </div>
                 
-                <!-- Risk Assessment -->
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold mb-2 text-gray-800 border-b pb-2">Risk Assessment</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div id="t21Risk" class="risk-card">
-                            <p class="text-sm font-medium mb-1">Trisomy 21 (Down)</p>
-                            <p class="text-xl font-bold" id="t21RiskValue">1:0</p>
-                            <p class="text-xs" id="t21RiskCategory"></p>
-                        </div>
-                        <div id="t18Risk" class="risk-card">
-                            <p class="text-sm font-medium mb-1">Trisomy 18 (Edwards)</p>
-                            <p class="text-xl font-bold" id="t18RiskValue">1:0</p>
-                            <p class="text-xs" id="t18RiskCategory"></p>
-                        </div>
-                        <div id="t13Risk" class="risk-card">
-                            <p class="text-sm font-medium mb-1">Trisomy 13 (Patau)</p>
-                            <p class="text-xl font-bold" id="t13RiskValue">1:0</p>
-                            <p class="text-xs" id="t13RiskCategory"></p>
+                <!-- Patient Information -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-blue-700 border-b pb-2 mb-4">
+                        Patient Information
+                    </h2>
+                    <div class="bg-gray-50 p-4 rounded-md shadow-sm border text-sm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex">
+                                <span class="w-40 font-medium text-gray-700">Patient Name:</span>
+                                <span id="reportPatientName"></span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-40 font-medium text-gray-700">Patient ID:</span>
+                                <span id="reportPatientId"></span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-40 font-medium text-gray-700">Date of Birth:</span>
+                                <span id="reportDOB"></span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-40 font-medium text-gray-700">Gestational Age:</span>
+                                <span id="reportGA"></span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-40 font-medium text-gray-700">Sample Collection:</span>
+                                <span id="reportCollectionDate"></span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-40 font-medium text-gray-700">Ultrasound Date:</span>
+                                <span id="reportUltrasoundDate"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Detailed Results -->
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold mb-2 text-gray-800 border-b pb-2">Detailed Results</h3>
+                <!-- Test Results -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-blue-700 border-b pb-2 mb-4">Test Results</h2>
                     <div class="overflow-x-auto">
-                        <table class="min-w-full border border-gray-200 compact-table">
-                            <thead class="bg-gray-50">
+                        <table class="report-table">
+                            <thead>
                                 <tr>
-                                    <th class="text-left">Parameter</th>
-                                    <th class="text-left">Value</th>
-                                    <th class="text-left">Median</th>
-                                    <th class="text-left">MoM</th>
+                                    <th>Marker</th>
+                                    <th>Result</th>
+                                    <th>Median</th>
+                                    <th>MoM</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <tbody>
                                 <tr>
                                     <td>Beta-hCG</td>
-                                    <td id="hcgValue"></td>
-                                    <td id="hcgMedian"></td>
-                                    <td id="hcgMom"></td>
+                                    <td id="reportHcgValue"></td>
+                                    <td id="reportHcgMedian"></td>
+                                    <td id="reportHcgMom"></td>
+                                    <td id="reportHcgStatus" class="text-green-600">Normal</td>
                                 </tr>
                                 <tr>
                                     <td>PAPP-A</td>
-                                    <td id="pappaValue"></td>
-                                    <td id="pappaMedian"></td>
-                                    <td id="pappaMom"></td>
+                                    <td id="reportPappaValue"></td>
+                                    <td id="reportPappaMedian"></td>
+                                    <td id="reportPappaMom"></td>
+                                    <td id="reportPappaStatus" class="text-green-600">Normal</td>
                                 </tr>
                                 <tr>
                                     <td>Nuchal Translucency</td>
-                                    <td id="ntValue"></td>
-                                    <td>-</td>
-                                    <td id="ntMom"></td>
+                                    <td id="reportNtValue"></td>
+                                    <td id="reportNtMedian"></td>
+                                    <td id="reportNtMom"></td>
+                                    <td id="reportNtStatus" class="text-green-600">Normal</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 
-                <!-- Interpretation & Recommendations -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <h3 class="text-lg font-semibold mb-2 text-gray-800 border-b pb-2">Interpretation</h3>
-                        <div class="bg-gray-50 p-3 rounded-md text-xs">
-                            <p id="interpretationText"></p>
+                <!-- Risk Assessment -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-blue-700 border-b pb-2 mb-4">
+                        Risk Assessment
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div id="reportT21Risk" class="risk-card">
+                            <p class="font-medium mb-1">Trisomy 21 (Down Syndrome)</p>
+                            <p class="text-xl font-bold" id="reportT21RiskValue">1:0</p>
+                            <p class="text-sm" id="reportT21RiskCategory"></p>
+                        </div>
+                        <div id="reportT18Risk" class="risk-card">
+                            <p class="font-medium mb-1">Trisomy 18 (Edwards Syndrome)</p>
+                            <p class="text-xl font-bold" id="reportT18RiskValue">1:0</p>
+                            <p class="text-sm" id="reportT18RiskCategory"></p>
+                        </div>
+                        <div id="reportT13Risk" class="risk-card">
+                            <p class="font-medium mb-1">Trisomy 13 (Patau Syndrome)</p>
+                            <p class="text-xl font-bold" id="reportT13RiskValue">1:0</p>
+                            <p class="text-sm" id="reportT13RiskCategory"></p>
                         </div>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold mb-2 text-gray-800 border-b pb-2">Recommendations</h3>
-                        <div class="bg-gray-50 p-3 rounded-md text-xs">
-                            <ul class="list-disc pl-5" id="recommendationsList">
-                                <!-- Will be filled by JavaScript -->
-                            </ul>
-                        </div>
+                    
+                    <!-- Risk Visualization Chart -->
+                    <div class="chart-container">
+                        <canvas id="riskChart"></canvas>
                     </div>
                 </div>
                 
+                <!-- Interpretation -->
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold text-blue-700 border-b pb-2 mb-4">Interpretation</h2>
+                    <p class="text-gray-700" id="reportInterpretationText">
+                        The results of the first trimester maternal serum screening indicate a low
+                        risk for chromosomal abnormalities such as Trisomy 21, 18, and 13. All
+                        markers are within normal reference ranges. No further diagnostic testing 
+                        is recommended at this time, but regular prenatal care should continue.
+                    </p>
+                </div>
+                
                 <!-- Report Actions -->
-                <div class="flex flex-wrap justify-between mt-6 no-print">
+                <div class="flex flex-wrap justify-between mt-8 no-print">
                     <button id="printBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-md shadow-md transition duration-300 ease-in-out mb-2">
                         <i class="fas fa-print mr-2"></i>Print Report
                     </button>
@@ -428,6 +444,9 @@
                     <p class="font-medium">Disclaimer:</p>
                     <p>This screening test provides a risk assessment and is not diagnostic. A high-risk result does not confirm the presence of an abnormality, and a low-risk result does not guarantee a normal outcome. All results should be interpreted in conjunction with clinical evaluation and other diagnostic tests if indicated. Consult a genetic counselor or specialist for further information.</p>
                 </div>
+                
+                <!-- Print-only container for printing -->
+                <div id="reportPrintContainer" class="print-only"></div>
             </div>
         </div>
     </div>
@@ -437,9 +456,33 @@
     </div>
 
     <script>
+        // NT Medians Table
+        const ntMedians = {
+            10: [0.95, 0.97, 0.99, 1.01, 1.03, 1.05, 1.07],
+            11: [1.10, 1.13, 1.15, 1.18, 1.20, 1.23, 1.26],
+            12: [1.30, 1.36, 1.42, 1.48, 1.54, 1.60, 1.66],
+            13: [1.73, 1.80, 1.88, 1.95, 2.03, 2.10, 2.18]
+        };
+        
+        // Beta-hCG Medians
+        const betaHcgMedians = {
+            10: [176.95, 172.70, 168.55, 164.50, 160.55, 156.70, 152.93],
+            11: [149.26, 145.68, 142.18, 138.76, 135.43, 132.18, 129.01],
+            12: [125.91, 122.88, 119.93, 117.05, 114.24, 111.50, 108.82],
+            13: [106.21, 103.66, 101.17, 98.74, 96.37, 94.05, 91.80]
+        };
+        
+        // PAPP-A Medians
+        const pappaMedians = {
+            10: [777.13, 749.46, 727.25, 710.06, 697.57, 689.55, 685.84],
+            11: [686.37, 691.15, 700.28, 713.92, 732.33, 755.86, 784.99],
+            12: [820.28, 862.46, 912.43, 971.27, 1040.31, 1121.15, 1215.75],
+            13: [1326.49, 1456.29, 1608.68, 1788.02, 1999.66, 2250.19, 2547.79]
+        };
+        
         // DOM Elements
         const calculateBtn = document.getElementById('calculateBtn');
-        const resultsSection = document.getElementById('resultsSection');
+        const reportSection = document.getElementById('reportSection');
         const printBtn = document.getElementById('printBtn');
         const pdfBtn = document.getElementById('pdfBtn');
         const newPatientBtn = document.getElementById('newPatientBtn');
@@ -508,8 +551,10 @@
                 
                 const ageInDays = Math.floor((today - dob) / (1000 * 60 * 60 * 24));
                 calculatedAge.textContent = `${years} years, ${months} months (${ageInDays} days)`;
+                return { years, months, days: ageInDays };
             } else {
                 calculatedAge.textContent = "Enter valid DOB";
+                return null;
             }
         }
         
@@ -538,6 +583,32 @@
             const finalDays = finalGADays % 7;
             
             finalGA.textContent = `${finalWeeks} weeks + ${finalDays} days`;
+            
+            return { weeks: finalWeeks, days: finalDays };
+        }
+        
+        // Get NT median for given gestational age
+        function getNTMedian(weeks, days) {
+            if (ntMedians[weeks] && ntMedians[weeks][days]) {
+                return ntMedians[weeks][days];
+            }
+            return 0;
+        }
+        
+        // Get Beta-hCG median for given gestational age
+        function getBetaHcgMedian(weeks, days) {
+            if (betaHcgMedians[weeks] && betaHcgMedians[weeks][days]) {
+                return betaHcgMedians[weeks][days];
+            }
+            return 0;
+        }
+        
+        // Get PAPP-A median for given gestational age
+        function getPappaMedian(weeks, days) {
+            if (pappaMedians[weeks] && pappaMedians[weeks][days]) {
+                return pappaMedians[weeks][days];
+            }
+            return 0;
         }
         
         // Main calculation function
@@ -576,37 +647,54 @@
             }
             
             // Calculate maternal age
-            const today = new Date();
-            const birthDate = new Date(dob);
-            let maternalAge = today.getFullYear() - birthDate.getFullYear();
-            const monthDiff = today.getMonth() - birthDate.getMonth();
-            
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                maternalAge--;
+            const ageInfo = calculateAgeFromDOB();
+            if (!ageInfo) {
+                alert('Please enter a valid date of birth');
+                return;
             }
             
-            // Calculate risks
-            const riskT21 = calculateRiskT21(maternalAge, previousTrisomy === 'yes', betaHcg, pappa, nt, nasalBone);
-            const riskT18 = calculateRiskT18(maternalAge, previousTrisomy === 'yes', betaHcg, pappa, nt);
-            const riskT13 = calculateRiskT13(maternalAge, previousTrisomy === 'yes', betaHcg, pappa, nt);
+            // Calculate final GA
+            const finalGA = calculateFinalGA();
+            if (!finalGA) {
+                alert('Please enter valid dates for ultrasound and collection');
+                return;
+            }
             
-            // Display results
-            displayResults(
-                patientName, patientId, dob, ethnicity, maternalAge,
-                weeks, days, crl, betaHcg, pappa, nt, nasalBone,
+            // Get medians
+            const ntMedian = getNTMedian(finalGA.weeks, finalGA.days);
+            const betaHcgMedian = getBetaHcgMedian(finalGA.weeks, finalGA.days);
+            const pappaMedian = getPappaMedian(finalGA.weeks, finalGA.days);
+            
+            // Calculate MoMs
+            const ntMom = nt / ntMedian;
+            const betaHcgMom = betaHcg / betaHcgMedian;
+            const pappaMom = pappa / pappaMedian;
+            
+            // Calculate risks
+            const riskT21 = calculateRiskT21(ageInfo.years, previousTrisomy === 'yes', betaHcgMom, pappaMom, ntMom, nasalBone);
+            const riskT18 = calculateRiskT18(ageInfo.years, previousTrisomy === 'yes', betaHcgMom, pappaMom, ntMom);
+            const riskT13 = calculateRiskT13(ageInfo.years, previousTrisomy === 'yes', betaHcgMom, pappaMom, ntMom);
+            
+            // Display report
+            displayReport(
+                patientName, patientId, dob, ageInfo,
+                betaHcg, pappa, nt,
+                ntMedian, betaHcgMedian, pappaMedian,
+                ntMom, betaHcgMom, pappaMom,
                 riskT21, riskT18, riskT13,
-                collectionDate, ultrasoundDate, reportDate
+                collectionDate, ultrasoundDate, reportDate,
+                finalGA
             );
             
-            // Show results section
-            resultsSection.classList.remove('hidden');
+            // Show report section
+            reportSection.classList.remove('hidden');
             
-            // Scroll to results
-            resultsSection.scrollIntoView({ behavior: 'smooth' });
+            // Scroll to report
+            reportSection.scrollIntoView({ behavior: 'smooth' });
         }
         
         // Risk calculation functions
-        function calculateRiskT21(age, prevTrisomy, hcg, pappa, nt, nasalBone) {
+        function calculateRiskT21(age, prevTrisomy, hcgMom, pappaMom, ntMom, nasalBone) {
             // Base risk based on maternal age
             let baseRisk;
             if (age < 25) baseRisk = 1/1350;
@@ -619,12 +707,11 @@
             if (prevTrisomy) baseRisk *= 1.5;
             
             // Adjust for biomarkers
-            if (hcg > 2.5) baseRisk *= 1.8;
-            if (pappa < 0.5) baseRisk *= 2.2;
+            if (hcgMom > 2.5) baseRisk *= 1.8;
+            if (pappaMom < 0.5) baseRisk *= 2.2;
             
             // Adjust for NT
-            if (nt > 3.0) baseRisk *= 3.5;
-            else if (nt > 2.5) baseRisk *= 1.8;
+            if (ntMom > 1.5) baseRisk *= ntMom * 1.5;
             
             // Adjust for nasal bone
             if (nasalBone === 'absent') baseRisk *= 5;
@@ -632,7 +719,7 @@
             return baseRisk;
         }
         
-        function calculateRiskT18(age, prevTrisomy, hcg, pappa, nt) {
+        function calculateRiskT18(age, prevTrisomy, hcgMom, pappaMom, ntMom) {
             // Base risk based on maternal age
             let baseRisk;
             if (age < 25) baseRisk = 1/5000;
@@ -645,16 +732,16 @@
             if (prevTrisomy) baseRisk *= 1.5;
             
             // Adjust for biomarkers
-            if (hcg < 0.3) baseRisk *= 3;
-            if (pappa < 0.3) baseRisk *= 4;
+            if (hcgMom < 0.3) baseRisk *= 3;
+            if (pappaMom < 0.3) baseRisk *= 4;
             
             // Adjust for NT
-            if (nt > 3.0) baseRisk *= 4;
+            if (ntMom > 2.0) baseRisk *= ntMom * 2;
             
             return baseRisk;
         }
         
-        function calculateRiskT13(age, prevTrisomy, hcg, pappa, nt) {
+        function calculateRiskT13(age, prevTrisomy, hcgMom, pappaMom, ntMom) {
             // Base risk based on maternal age
             let baseRisk;
             if (age < 25) baseRisk = 1/16000;
@@ -667,60 +754,89 @@
             if (prevTrisomy) baseRisk *= 1.5;
             
             // Adjust for biomarkers
-            if (hcg < 0.4) baseRisk *= 2.5;
-            if (pappa < 0.4) baseRisk *= 3;
+            if (hcgMom < 0.4) baseRisk *= 2.5;
+            if (pappaMom < 0.4) baseRisk *= 3;
             
             // Adjust for NT
-            if (nt > 3.0) baseRisk *= 3.5;
+            if (ntMom > 1.8) baseRisk *= ntMom * 1.8;
             
             return baseRisk;
         }
         
-        // Display results function
-        function displayResults(
-            patientName, patientId, dob, ethnicity, maternalAge,
-            weeks, days, crl, betaHcg, pappa, nt, nasalBone,
+        // Display report function
+        function displayReport(
+            patientName, patientId, dob, ageInfo,
+            betaHcg, pappa, nt,
+            ntMedian, betaHcgMedian, pappaMedian,
+            ntMom, betaHcgMom, pappaMom,
             riskT21, riskT18, riskT13,
-            collectionDate, ultrasoundDate, reportDate
+            collectionDate, ultrasoundDate, reportDate,
+            finalGA
         ) {
             // Format patient info
-            document.getElementById('resultName').textContent = patientName;
-            document.getElementById('resultId').textContent = patientId || 'N/A';
-            document.getElementById('resultDob').textContent = dob ? new Date(dob).toLocaleDateString() : 'N/A';
-            document.getElementById('resultMaternalAge').textContent = `${maternalAge} years`;
-            document.getElementById('resultCollectionDate').textContent = collectionDate ? new Date(collectionDate).toLocaleDateString() : 'N/A';
-            document.getElementById('resultUltrasoundDate').textContent = ultrasoundDate ? new Date(ultrasoundDate).toLocaleDateString() : 'N/A';
-            document.getElementById('resultGestationalAge').textContent = `${weeks}+${days} weeks`;
-            document.getElementById('resultReportDate').textContent = reportDate ? new Date(reportDate).toLocaleDateString() : 'N/A';
+            document.getElementById('reportPatientName').textContent = patientName;
+            document.getElementById('reportPatientId').textContent = patientId || 'N/A';
+            document.getElementById('reportDOB').textContent = dob ? new Date(dob).toLocaleDateString() : 'N/A';
+            document.getElementById('reportGA').textContent = `${finalGA.weeks} weeks + ${finalGA.days} days`;
+            document.getElementById('reportCollectionDate').textContent = collectionDate ? new Date(collectionDate).toLocaleDateString() : 'N/A';
+            document.getElementById('reportUltrasoundDate').textContent = ultrasoundDate ? new Date(ultrasoundDate).toLocaleDateString() : 'N/A';
+            document.getElementById('reportDateDisplay').textContent = reportDate ? new Date(reportDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
             
             // Format risks
             const formattedRiskT21 = formatRisk(riskT21);
             const formattedRiskT18 = formatRisk(riskT18);
             const formattedRiskT13 = formatRisk(riskT13);
             
-            document.getElementById('t21RiskValue').textContent = formattedRiskT21;
-            document.getElementById('t18RiskValue').textContent = formattedRiskT18;
-            document.getElementById('t13RiskValue').textContent = formattedRiskT13;
+            document.getElementById('reportT21RiskValue').textContent = formattedRiskT21;
+            document.getElementById('reportT18RiskValue').textContent = formattedRiskT18;
+            document.getElementById('reportT13RiskValue').textContent = formattedRiskT13;
             
             // Set risk categories and styling
-            setRiskCategory('t21Risk', riskT21);
-            setRiskCategory('t18Risk', riskT18);
-            setRiskCategory('t13Risk', riskT13);
+            setRiskCategory('reportT21Risk', riskT21, 'reportT21RiskCategory');
+            setRiskCategory('reportT18Risk', riskT18, 'reportT18RiskCategory');
+            setRiskCategory('reportT13Risk', riskT13, 'reportT13RiskCategory');
             
             // Fill detailed results
-            document.getElementById('hcgValue').textContent = betaHcg.toFixed(2);
-            document.getElementById('hcgMedian').textContent = "N/A";
-            document.getElementById('hcgMom').textContent = "N/A";
+            document.getElementById('reportHcgValue').textContent = betaHcg.toFixed(2) + ' IU/ml';
+            document.getElementById('reportHcgMedian').textContent = betaHcgMedian.toFixed(2) + ' IU/ml';
+            document.getElementById('reportHcgMom').textContent = betaHcgMom.toFixed(2) + ' MoM';
+            document.getElementById('reportHcgStatus').textContent = getStatus(betaHcgMom, 0.4, 2.5);
             
-            document.getElementById('pappaValue').textContent = pappa.toFixed(2);
-            document.getElementById('pappaMedian').textContent = "N/A";
-            document.getElementById('pappaMom').textContent = "N/A";
+            document.getElementById('reportPappaValue').textContent = pappa.toFixed(2) + ' ng/mL';
+            document.getElementById('reportPappaMedian').textContent = pappaMedian.toFixed(2) + ' ng/mL';
+            document.getElementById('reportPappaMom').textContent = pappaMom.toFixed(2) + ' MoM';
+            document.getElementById('reportPappaStatus').textContent = getStatus(pappaMom, 0.5, 2.0);
             
-            document.getElementById('ntValue').textContent = nt.toFixed(1);
-            document.getElementById('ntMom').textContent = "N/A";
+            document.getElementById('reportNtValue').textContent = nt.toFixed(2) + ' mm';
+            document.getElementById('reportNtMedian').textContent = ntMedian.toFixed(2) + ' mm';
+            document.getElementById('reportNtMom').textContent = ntMom.toFixed(2) + ' MoM';
+            document.getElementById('reportNtStatus').textContent = getNtStatus(nt, ntMedian);
             
-            // Set interpretation and recommendations
-            setInterpretationAndRecommendations(riskT21, riskT18, riskT13, nt, nasalBone);
+            // Set status colors
+            setStatusColor('reportHcgStatus');
+            setStatusColor('reportPappaStatus');
+            setStatusColor('reportNtStatus');
+            
+            // Create risk visualization chart
+            createRiskChart(riskT21, riskT18, riskT13);
+            
+            // Set interpretation
+            setInterpretation(riskT21, riskT18, riskT13, nt, nasalBone);
+            
+            // Prepare print version
+            preparePrintVersion();
         }
         
         function formatRisk(risk) {
@@ -731,99 +847,186 @@
             return `1:${inverse}`;
         }
         
-        function setRiskCategory(elementId, risk) {
+        function setRiskCategory(elementId, risk, categoryElementId) {
             const inverseRisk = 1 / risk;
             const element = document.getElementById(elementId);
-            const categoryElement = document.getElementById(`${elementId}Category`);
+            const categoryElement = document.getElementById(categoryElementId);
             
             if (inverseRisk <= 50) {
                 // High risk
                 element.className = "risk-card risk-high";
                 categoryElement.textContent = "High Risk";
-                categoryElement.className = "text-xs text-red-600 font-medium";
+                categoryElement.className = "text-sm text-red-600 font-medium";
             } else if (inverseRisk <= 1000) {
                 // Moderate risk
                 element.className = "risk-card risk-moderate";
                 categoryElement.textContent = "Moderate Risk";
-                categoryElement.className = "text-xs text-yellow-600 font-medium";
+                categoryElement.className = "text-sm text-yellow-600 font-medium";
             } else {
                 // Low risk
                 element.className = "risk-card risk-low";
                 categoryElement.textContent = "Low Risk";
-                categoryElement.className = "text-xs text-green-600 font-medium";
+                categoryElement.className = "text-sm text-green-600 font-medium";
             }
         }
         
-        function setInterpretationAndRecommendations(riskT21, riskT18, riskT13, nt, nasalBone) {
-            const interpretationText = document.getElementById('interpretationText');
-            const recommendationsList = document.getElementById('recommendationsList');
+        function getStatus(value, min, max) {
+            if (value < min) return "Low";
+            if (value > max) return "High";
+            return "Normal";
+        }
+        
+        function getNtStatus(nt, median) {
+            if (nt > median * 1.8) return "High";
+            if (nt < median * 0.8) return "Low";
+            return "Normal";
+        }
+        
+        function setStatusColor(elementId) {
+            const element = document.getElementById(elementId);
+            if (element.textContent === "Low" || element.textContent === "High") {
+                element.className = "text-red-600 font-medium";
+            } else {
+                element.className = "text-green-600 font-medium";
+            }
+        }
+        
+        function createRiskChart(riskT21, riskT18, riskT13) {
+            const ctx = document.getElementById('riskChart').getContext('2d');
             
-            // Clear previous recommendations
-            recommendationsList.innerHTML = '';
+            // Destroy previous chart if exists
+            if (window.riskChartInstance) {
+                window.riskChartInstance.destroy();
+            }
+            
+            // Calculate inverse risks for visualization
+            const invT21 = 1 / riskT21;
+            const invT18 = 1 / riskT18;
+            const invT13 = 1 / riskT13;
+            
+            window.riskChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Trisomy 21', 'Trisomy 18', 'Trisomy 13'],
+                    datasets: [{
+                        label: 'Risk Score (1 in X)',
+                        data: [invT21, invT18, invT13],
+                        backgroundColor: [
+                            invT21 <= 50 ? 'rgba(239, 68, 68, 0.7)' : 
+                                invT21 <= 1000 ? 'rgba(234, 179, 8, 0.7)' : 'rgba(34, 197, 94, 0.7)',
+                            invT18 <= 50 ? 'rgba(239, 68, 68, 0.7)' : 
+                                invT18 <= 1000 ? 'rgba(234, 179, 8, 0.7)' : 'rgba(34, 197, 94, 0.7)',
+                            invT13 <= 50 ? 'rgba(239, 68, 68, 0.7)' : 
+                                invT13 <= 1000 ? 'rgba(234, 179, 8, 0.7)' : 'rgba(34, 197, 94, 0.7)'
+                        ],
+                        borderColor: [
+                            invT21 <= 50 ? 'rgba(239, 68, 68, 1)' : 
+                                invT21 <= 1000 ? 'rgba(234, 179, 8, 1)' : 'rgba(34, 197, 94, 1)',
+                            invT18 <= 50 ? 'rgba(239, 68, 68, 1)' : 
+                                invT18 <= 1000 ? 'rgba(234, 179, 8, 1)' : 'rgba(34, 197, 94, 1)',
+                            invT13 <= 50 ? 'rgba(239, 68, 68, 1)' : 
+                                invT13 <= 1000 ? 'rgba(234, 179, 8, 1)' : 'rgba(34, 197, 94, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Risk Score (1 in X)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `1 in ${Math.round(context.raw)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function setInterpretation(riskT21, riskT18, riskT13, nt, nasalBone) {
+            const interpretationText = document.getElementById('reportInterpretationText');
             
             // Base interpretation
-            let interpretation = "The risk assessment is based on maternal age, fetal nuchal translucency measurement, and maternal serum biochemistry (free β-hCG and PAPP-A). This screening test has a detection rate of approximately 90% for trisomy 21 with a 5% false-positive rate.";
+            let interpretation = "The results of the first trimester maternal serum screening indicate ";
+            
+            // Risk level determination
+            const inverseRiskT21 = 1 / riskT21;
+            let riskLevel = "low";
+            
+            if (inverseRiskT21 <= 50) {
+                riskLevel = "high";
+            } else if (inverseRiskT21 <= 1000) {
+                riskLevel = "moderate";
+            }
+            
+            interpretation += `a ${riskLevel} risk for chromosomal abnormalities such as Trisomy 21, 18, and 13. `;
             
             // Add specific findings
             if (nt > 3.5) {
-                interpretation += " The nuchal translucency measurement is significantly increased, which may indicate an increased risk for chromosomal abnormalities or congenital heart defects.";
+                interpretation += "The nuchal translucency measurement is significantly increased, which may indicate an increased risk for chromosomal abnormalities or congenital heart defects. ";
             } else if (nt > 2.5) {
-                interpretation += " The nuchal translucency measurement is mildly increased.";
+                interpretation += "The nuchal translucency measurement is mildly increased. ";
             }
             
             if (nasalBone === 'absent') {
-                interpretation += " The fetal nasal bone appears absent, which is a soft marker for trisomy 21.";
+                interpretation += "The fetal nasal bone appears absent, which is a soft marker for trisomy 21. ";
+            }
+            
+            interpretation += "This screening test has a detection rate of approximately 90% for trisomy 21 with a 5% false-positive rate. ";
+            
+            if (riskLevel === "low") {
+                interpretation += "No further diagnostic testing is recommended at this time, but regular prenatal care should continue.";
+            } else if (riskLevel === "moderate") {
+                interpretation += "Non-invasive prenatal testing (NIPT) should be considered as a follow-up test.";
+            } else {
+                interpretation += "Invasive diagnostic testing (CVS or amniocentesis) should be offered due to high risk.";
             }
             
             interpretationText.textContent = interpretation;
-            
-            // Add standard recommendations
-            addRecommendation(recommendationsList, "Detailed counseling regarding the screening results should be provided.");
-            
-            // Risk-specific recommendations
-            const inverseRiskT21 = 1 / riskT21;
-            
-            if (inverseRiskT21 <= 50) {
-                addRecommendation(recommendationsList, "Invasive diagnostic testing (CVS or amniocentesis) should be offered due to high risk for trisomy 21.");
-                addRecommendation(recommendationsList, "Consider fetal echocardiography due to increased NT measurement.");
-            } else if (inverseRiskT21 <= 1000) {
-                addRecommendation(recommendationsList, "Non-invasive prenatal testing (NIPT) should be considered as a follow-up test.");
-                addRecommendation(recommendationsList, "Detailed ultrasound at 18-20 weeks is recommended.");
-            } else {
-                addRecommendation(recommendationsList, "Routine prenatal care is recommended with standard ultrasound at 18-20 weeks.");
-            }
-            
-            if (nt > 3.5) {
-                addRecommendation(recommendationsList, "Fetal echocardiography is strongly recommended due to significantly increased NT measurement.");
-            } else if (nt > 2.5) {
-                addRecommendation(recommendationsList, "Consider fetal echocardiography due to mildly increased NT measurement.");
-            }
-            
-            if (nasalBone === 'absent') {
-                addRecommendation(recommendationsList, "Follow-up ultrasound to reassess nasal bone is recommended.");
-            }
         }
         
-        function addRecommendation(listElement, text) {
-            const li = document.createElement('li');
-            li.textContent = text;
-            listElement.appendChild(li);
+        function preparePrintVersion() {
+            const printContainer = document.getElementById('reportPrintContainer');
+            const reportCard = document.querySelector('.report-card');
+            
+            // Clone the report card
+            const clone = reportCard.cloneNode(true);
+            
+            // Remove no-print elements
+            const noPrintElements = clone.querySelectorAll('.no-print');
+            noPrintElements.forEach(el => el.remove());
+            
+            // Update print container
+            printContainer.innerHTML = '';
+            printContainer.appendChild(clone);
         }
         
         // Print and PDF functions
         function printReport() {
-            // Hide everything except results before printing
-            document.body.classList.add('printing');
             window.print();
-            document.body.classList.remove('printing');
         }
         
         function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'pt', 'a4');
             
-            // Use html2canvas to capture the results section
-            html2canvas(document.getElementById('resultsSection'), {
+            // Use html2canvas to capture the print container
+            html2canvas(document.getElementById('reportPrintContainer'), {
                 scale: 2,
                 logging: false,
                 useCORS: true,
@@ -835,15 +1038,11 @@
                 
                 doc.addImage(imgData, 'PNG', 20, 20, imgWidth, imgHeight);
                 
-                // Add disclaimer
+                // Add footer
                 doc.setFontSize(10);
                 doc.setTextColor(100);
-                doc.text('Disclaimer: This screening test provides a risk assessment and is not diagnostic. Consult a genetic counselor or specialist for further information.', 
-                    40, doc.internal.pageSize.getHeight() - 30, {maxWidth: 500});
-                
-                // Add footer
                 doc.text('Developed by Clinicalsci | Medical Screening Solutions', 
-                    doc.internal.pageSize.getWidth()/2, doc.internal.pageSize.getHeight() - 10, 
+                    doc.internal.pageSize.getWidth()/2, doc.internal.pageSize.getHeight() - 20, 
                     {align: 'center'});
                 
                 // Save the PDF
@@ -872,8 +1071,8 @@
             document.getElementById('calculatedAge').textContent = 'Enter DOB to calculate';
             document.getElementById('forceGA').checked = false;
             
-            // Hide results section
-            resultsSection.classList.add('hidden');
+            // Hide report section
+            reportSection.classList.add('hidden');
             
             // Scroll to top
             window.scrollTo(0, 0);
@@ -881,6 +1080,26 @@
         
         // Initialize with current date
         document.getElementById('reportDate').valueAsDate = new Date();
+        
+        // Set sample data for demo
+        function setSampleData() {
+            document.getElementById('patientName').value = 'Jane Doe';
+            document.getElementById('patientId').value = 'PT-2025-12345';
+            document.getElementById('dob').value = '1985-01-15';
+            document.getElementById('crl').value = '65';
+            document.getElementById('betaHcg').value = '125.5';
+            document.getElementById('pappa').value = '850.25';
+            document.getElementById('nt').value = '1.5';
+            document.getElementById('collectionDate').value = '2025-06-25';
+            document.getElementById('ultrasoundDate').value = '2025-06-20';
+            
+            // Trigger calculations
+            calculateAgeFromDOB();
+            calculateGAFromCRL();
+        }
+        
+        // Set sample data on page load for demo
+        setTimeout(setSampleData, 500);
     </script>
 </body>
 </html>
