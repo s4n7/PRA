@@ -1,5 +1,4 @@
-<script>
-        // Asian population median tables
+       // Asian population median tables
         const asianMedians = {
             freeBetaHCG: {
                 70: 25.3, 71: 26.1, 72: 26.9, 73: 27.7, 74: 28.5, 75: 29.3, 
@@ -609,4 +608,3 @@
             // Generate PDF button
             document.getElementById('pdf-button').addEventListener('click', generatePDFReport);
         });
-    </script>
