@@ -1,28 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FTMSS Screening App</title>
-  <link href="styles.css" rel="stylesheet">
-  <!-- Load React and ReactDOM -->
-  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <!-- Load pdfmake -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Trimester Maternal Serum Screening</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <link href="src/style.css" rel="stylesheet" />
+     
 </head>
 <body>
-  <div id="root"></div>
-  
-  <!-- Your main app script -->
-  <script type="text/babel" src="app.js"></script>
-  
-  <!-- Babel configuration -->
-  <script type="text/babel">
-    // This tells Babel to transform JSX
-    // The actual React components are in app.js
-  </script>
-</body>
+    <div class="app-container">
+        <header>
+            <h1>First Trimester Maternal Serum Screening</h1>
+            <p>Comprehensive risk assessment for Trisomy 21 and Trisomy 18</p>
+        </header>
+        
+        <div class="form-section">
+            <h2 class="section-title"><i>1</i> Patient Information</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patient-name">Full Name</label>
+                    <input type="text" id="patient-name" placeholder="Enter full name">
+                </div>
+                <div class="form-group">
+                    <label for="patient-dob">Date of Birth</label>
+                    <input type="date" id="patient-dob">
+                </div>
+                <div class="form-group">
+                    <label for="patient-age">Age</label>
+                    <input type="text" id="patient-age" disabled placeholder="Will be calculated">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patient-id">ID Number</label>
+                    <input type="text" id="patient-id" placeholder="Enter ID number">
+                </div>
+                <div class="form-group">
+                    <label for="patient-ethnicity">Ethnicity</label>
+                    <select id="patient-ethnicity">
+                        <option value="Asian" selected>Asian</option>
+                        <option value="Caucasian">Caucasian</option>
+                        <option value="African">African</option>
+                        <option value="Hispanic">Hispanic</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="patient-weight">Weight (kg)</label>
+                    <input type="number" id="patient-weight" placeholder="Enter weight">
+                </div>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="patient-smoking">
+                <label for="patient-smoking">Smoker</label>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2 class="section-title"><i>2</i> Pregnancy & Ultrasound Details</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lmp">Last Menstrual Period (LMP)</label>
+                    <input type="date" id="lmp">
+                </div>
+                <div class="form-group">
+                    <label for="ultrasound-date">Date of Ultrasound</label>
+                    <input type="date" id="ultrasound-date">
+                </div>
+                <div class="form-group">
+                    <label for="crl">Crown-Rump Length (CRL in mm)</label>
+                    <input type="number" id="crl" placeholder="Enter CRL">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="ga-ultrasound">Gestational Age at Ultrasound</label>
+                    <input type="text" id="ga-ultrasound" disabled placeholder="Calculated from CRL">
+                </div>
+                <div class="form-group">
+                    <label for="sample-date">Date of Sample Collection</label>
+                    <input type="date" id="sample-date">
+                </div>
+                <div class="form-group">
+                    <label for="ga-sample">Gestational Age at Sampling</label>
+                    <input type="text" id="ga-sample" disabled placeholder="Calculated from dates">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nt">Nuchal Translucency (NT in mm)</label>
+                    <input type="number" step="0.1" id="nt" placeholder="Enter NT measurement">
+                </div>
+                <div class="form-group">
+                    <label for="pregnancy-type">Pregnancy Type</label>
+                    <select id="pregnancy-type">
+                        <option value="singleton" selected>Singleton</option>
+                        <option value="twin">Twin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="height: 20px;"></label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="ivf">
+                        <label for="ivf">IVF Conception</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2 class="section-title"><i>3</i> Serum Markers</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="free-hcg">Free β-hCG (IU/mL)</label>
+                    <input type="number" step="0.1" id="free-hcg" placeholder="Enter value">
+                </div>
+                <div class="form-group">
+                    <label for="free-hcg-mom">Free β-hCG MoM</label>
+                    <input type="text" id="free-hcg-mom" disabled placeholder="Calculated MoM">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pappa">PAPP-A (ng/mL)</label>
+                    <input type="number" step="0.01" id="pappa" placeholder="Enter value">
+                </div>
+                <div class="form-group">
+                    <label for="pappa-mom">PAPP-A MoM</label>
+                    <input type="text" id="pappa-mom" disabled placeholder="Calculated MoM">
+                </div>
+            </div>
+        </div>
+        
+        <div class="risk-section">
+            <h2 class="section-title"><i>4</i> Risk Assessment</h2>
+            <div class="risk-container">
+                <div class="risk-card" id="t21-risk">
+                    <h3>🧬 Trisomy 21 (Down Syndrome)</h3>
+                    <div class="risk-value">1:---</div>
+                    <div class="risk-classification">Risk not calculated</div>
+                    <p><strong>Background Risk:</strong> <span id="t21-bg-risk">---</span></p>
+                    <p><strong>Adjusted Risk:</strong> <span id="t21-adj-risk">---</span></p>
+                    <p><strong>Cutoff:</strong> 1:250</p>
+                </div>
+                <div class="risk-card" id="t18-risk">
+                    <h3>🧬 Trisomy 18 (Edwards Syndrome)</h3>
+                    <div class="risk-value">1:---</div>
+                    <div class="risk-classification">Risk not calculated</div>
+                    <p><strong>Background Risk:</strong> <span id="t18-bg-risk">---</span></p>
+                    <p><strong>Adjusted Risk:</strong> <span id="t18-adj-risk">---</span></p>
+                    <p><strong>Cutoff:</strong> 1:100</p>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">Risk Visualization</div>
+                <canvas id="risk-chart"></canvas>
+            </div>
+        </div>
+        
+        <div class="action-bar">
+            <button id="calculate-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"></path>
+                    <circle cx="6" cy="16" r="3"></circle>
+                    <path d="M9 16h5"></path>
+                    <circle cx="18" cy="16" r="3"></circle>
+                </svg>
+                Calculate Risk
+            </button>
+            <button id="pdf-button" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Generate PDF Report
+            </button>
+        </div>
+        
+        <footer>
+            <p>First Trimester Maternal Serum Screening App | For clinical use only</p>
+        </footer>
+    </div>
+    <script src="src/app.js"></script>
+    </body>
 </html>
